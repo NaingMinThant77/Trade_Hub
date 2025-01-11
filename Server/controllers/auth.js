@@ -80,3 +80,23 @@ exports.login = async (req, res, next) => {
         });
     }
 }
+
+exports.checkCurrentUser = async (req, res) => {
+    try {//req.userId => from middleware
+        const userDoc = await User.findById(req.userId).select("name email role")
+        if (!userDoc) {
+            throw new Error("Unauthorized User")
+        }
+
+        res.status(200).json({
+            isSuccess: true,
+            message: "User is authorized",
+            userDoc
+        })
+    } catch (error) {
+        return res.status(401).json({
+            isSuccess: false,
+            message: error.message
+        });
+    }
+}

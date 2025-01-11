@@ -5,6 +5,8 @@ const authController = require("../controllers/auth");
 const { body } = require("express-validator");
 const User = require("../models/User")
 
+const authMiddleware = require("../middlewares/auth")
+
 // create new user
 // POST => /register
 router.post("/register", [
@@ -29,5 +31,9 @@ router.post("/login", [
     body("email").trim().notEmpty().withMessage("Email is required").isEmail().withMessage("Please enter a valid email address"),
     body("password").trim().notEmpty().withMessage("Password is required").isLength({ min: 5 }).withMessage("Password must have at least 5 characters"),
 ], authController.login);
+
+// check user is login or not
+// get => /get-current-user
+router.get('/get-current-user', authMiddleware, authController.checkCurrentUser);
 
 module.exports = router;

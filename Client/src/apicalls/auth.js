@@ -4,8 +4,7 @@ import { axiosInstance } from "./axiosInstance"
 export const registerUser = async (payload) => {
     try {
         const response = await axiosInstance.post("/register", payload)
-        console.log(response)
-        console.log(response.data)
+
         return response.data
     } catch (error) {
         return error.message; // from server
@@ -18,8 +17,20 @@ export const loginUser = async (payload) => {
         const response = await axiosInstance.post("/login", payload, {
             validateStatus: () => true
         })
-        console.log(response)
-        console.log(response.data)
+
+        return response.data
+    } catch (error) {
+        return error.message; // from server
+    }
+}
+
+// check current user
+export const checkCurrentUser = async () => {
+    try {
+        const response = await axiosInstance.get("/get-current-user", {
+            validateStatus: () => true
+        })
+
         return response.data
     } catch (error) {
         return error.message; // from server
