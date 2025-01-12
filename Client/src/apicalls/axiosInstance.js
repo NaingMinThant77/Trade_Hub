@@ -1,7 +1,8 @@
 import axios from "axios" // npm install axios
 
 const getrefreshLocalStorage = () => {
-    return localStorage.getItem("token")
+    const refreshToken = localStorage.getItem("token")
+    return refreshToken;
 }
 
 export const axiosInstance = axios.create({

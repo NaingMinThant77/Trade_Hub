@@ -13,6 +13,9 @@ app.use(bodyParser.json());
 const authRoutes = require("./routes/auth");
 app.use(authRoutes);
 
+const productRoutes = require("./routes/product");
+app.use(productRoutes);
+
 app.listen(4000, () => {
     console.log("Server is running at port 4000");
 });

@@ -10,7 +10,7 @@ exports.register = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({
             isSuccess: false,
-            message: errors.array()[0]
+            message: errors.array()[0].msg,
         });
     }
 
@@ -42,7 +42,7 @@ exports.login = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({
             isSuccess: false,
-            message: errors.array()[0]
+            message: errors.array()[0].msg,
         });
     }
 
