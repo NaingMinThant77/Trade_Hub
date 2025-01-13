@@ -21,7 +21,6 @@ const AuthForm = ({ isLoginPage }) => {
                     localStorage.setItem("token", response.token)
                     dispatch(setUser(response.token))
                     navigate("/");
-                    window.location.reload(false)
                 } else {
                     throw new Error(response.message)
                 }

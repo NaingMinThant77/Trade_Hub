@@ -1,22 +1,44 @@
-import React, { useState } from 'react'
-import { Tabs } from "antd"
+import { Tabs, message } from "antd"
 import Products from './Products'
 import AddProduct from './AddProduct'
 import General from './General'
 
+import { useEffect, useState } from "react"
+import { getAllProducts } from "../../apicalls/product"
+
 const Index = () => {
     const [activeTabKey, setActiceTabKey] = useState("1")
+    const [products, setProducts] = useState([])
+    const [editMode, setEditMode] = useState(false)
+    const [editProductId, setEditProductId] = useState(null)
+
+    const getProducts = async () => {
+        try {
+            const response = await getAllProducts()
+            if (response.isSuccess) {
+                setProducts(response.productDoc)
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (error) {
+            message.error(error.message)
+        }
+    }
+
+    useEffect(() => {
+        getProducts()
+    }, [activeTabKey])
 
     const items = [
         {
             key: '1',
             label: 'Products',
-            children: <Products />,
+            children: <Products products={products} setActiceTabKey={setActiceTabKey} setEditMode={setEditMode} setEditProductId={setEditProductId} getProducts={getProducts} />,
         },
         {
             key: '2',
-            label: 'Sell Product',
-            children: <AddProduct setActiceTabKey={setActiceTabKey} />,
+            label: 'Manage Product',
+            children: <AddProduct setActiceTabKey={setActiceTabKey} getProducts={getProducts} editMode={editMode} editProductId={editProductId} />,
         },
         {
             key: '3',
@@ -29,8 +51,12 @@ const Index = () => {
             children: <General />,
         },
     ]
+    const onChangeHandler = (key) => {
+        setActiceTabKey(key)
+        setEditMode(false)
+    }
     return (
-        <Tabs activeKey={activeTabKey} onChange={key => setActiceTabKey(key)} items={items} tabPosition='left' size='large' />
+        <Tabs activeKey={activeTabKey} onChange={onChangeHandler} items={items} tabPosition='left' size='large' />
     )
 }
 
