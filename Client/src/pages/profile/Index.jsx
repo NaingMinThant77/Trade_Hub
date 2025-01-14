@@ -1,6 +1,6 @@
 import { Tabs, message } from "antd"
 import Products from './Products'
-import AddProduct from './AddProduct'
+import ManageProduct from './ManageProduct'
 import General from './General'
 
 import { useEffect, useState } from "react"
@@ -38,7 +38,7 @@ const Index = () => {
         {
             key: '2',
             label: 'Manage Product',
-            children: <AddProduct setActiceTabKey={setActiceTabKey} getProducts={getProducts} editMode={editMode} editProductId={editProductId} />,
+            children: <ManageProduct setActiceTabKey={setActiceTabKey} getProducts={getProducts} editMode={editMode} editProductId={editProductId} />,
         },
         {
             key: '3',

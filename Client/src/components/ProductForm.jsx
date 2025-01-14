@@ -2,53 +2,26 @@ import { Checkbox, Col, Form, Input, message, Row, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { SquaresPlusIcon } from "@heroicons/react/24/solid"
 
-import { getOldProduct, sellProduct, updateProduct } from "../../apicalls/product"
+import { getOldProduct, sellProduct, updateProduct } from "../apicalls/product"
 import { useEffect, useState } from 'react'
 
-const AddProduct = ({ setActiceTabKey, getProducts, editMode, editProductId }) => {
+const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) => {
     const [form] = Form.useForm();
     const [sellerId, setSellerId] = useState(null)
 
     const options = [
-        {
-            value: 'electronics',
-            label: 'Electronics',
-        },
-        {
-            value: 'fashion',
-            label: 'Fashion',
-        },
-        {
-            value: 'home_appliances',
-            label: 'Home Appliances',
-        },
-        {
-            value: 'books',
-            label: 'Books',
-        },
-        {
-            value: 'toys',
-            label: 'Toys',
-        },
-        {
-            value: 'furniture',
-            label: 'Furniture',
-        },
+        { value: 'electronics', label: 'Electronics', },
+        { value: 'fashion', label: 'Fashion', },
+        { value: 'home_appliances', label: 'Home Appliances', },
+        { value: 'books', label: 'Books', },
+        { value: 'toys', label: 'Toys', },
+        { value: 'furniture', label: 'Furniture', },
     ];
 
     const checkBoxOptions = [
-        {
-            label: 'Accessories',
-            value: 'Accessories',
-        },
-        {
-            label: 'Wrranty',
-            value: 'Wrranty',
-        },
-        {
-            label: 'Vocher',
-            value: 'Vocher',
-        },
+        { label: 'Accessories', value: 'Accessories', },
+        { label: 'Wrranty', value: 'Wrranty', },
+        { label: 'Vocher', value: 'Vocher', },
     ];
 
     const onFinishHandler = async (values) => {
@@ -162,5 +135,5 @@ const AddProduct = ({ setActiceTabKey, getProducts, editMode, editProductId }) =
     )
 }
 
-export default AddProduct
+export default ProductForm
 

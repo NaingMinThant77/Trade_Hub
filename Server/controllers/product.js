@@ -1,6 +1,16 @@
 const Product = require("../models/Product")
 const { validationResult } = require("express-validator")
 
+require("dotenv").config()
+const { v2: cloudinary } = require('cloudinary');
+
+// Configuration
+cloudinary.config({
+    cloud_name: 'dgyvgsue4',
+    api_key: '314866484468419',
+    api_secret: process.env.CLOUD_API // Click 'View API Keys' above to copy your API secret
+});
+
 exports.addNewProduct = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -111,8 +121,36 @@ exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
     try {
         const productDoc = await Product.findOne({ _id: id })
+
+        if (!productDoc) {
+            return res.status(404).json({
+                isSuccess: false,
+                message: "Product not found."
+            });
+        }
+
         if (req.userId.toString() !== productDoc.seller.toString()) {
             throw new Error("Authorization Failed")
+        }
+
+        if (productDoc.images && Array.isArray(productDoc.images)) {
+            // https://res.cloudinary.com/dgyvgsue4/image/upload/v1736780993/mu59fgom.jpg
+            // mu59fgom.jpg
+            // mu59fgom
+            const deletePromis = productDoc.images.map(img => {
+                const publicId = img.substring(img.lastIndexOf("/") + 1, img.lastIndexOf("."));
+                return new Promise((resolve, reject) => {
+                    cloudinary.uploader.destroy(publicId, (err, result) => {
+                        if (err) {
+                            reject(new Error("Destroy Failed."))
+                        } else {
+                            resolve(result)
+                        }
+                    })
+                })
+            })
+
+            await Promise.all(deletePromis);
         }
 
         await Product.findByIdAndDelete(id)
@@ -124,6 +162,40 @@ exports.deleteProduct = async (req, res) => {
         return res.status(422).json({
             isSuccess: false,
             message: error.message
+        });
+    }
+}
+
+// uploadImage
+exports.uploadProductImages = async (req, res) => {
+    const productImages = req.files;
+    const productId = req.body.product_id
+    let secureUrlArray = []
+
+    try {
+        productImages.forEach(img => {
+            cloudinary.uploader.upload(img.path, async (err, result) => {
+                if (!err) {
+                    const url = result.secure_url;
+                    secureUrlArray.push(url)
+
+                    if (productImages.length === secureUrlArray.length) {
+                        await Product.findByIdAndUpdate(productId, { $push: { images: secureUrlArray } })
+                        return res.status(200).json({
+                            isSuccess: true,
+                            message: "Product Image saved.",
+                            secureUrlArray
+                        });
+                    }
+                } else {
+                    throw new Error("Cloud upload Failed!")
+                }
+            })
+        })
+    } catch (err) {
+        return res.status(404).json({
+            isSuccess: false,
+            message: err.message
         });
     }
 }

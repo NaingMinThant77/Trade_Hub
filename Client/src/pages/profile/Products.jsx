@@ -70,6 +70,7 @@ const Products = ({ products, setActiceTabKey, setEditMode, setEditProductId, ge
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 ">
+                                                <button type='button' className="font-medium text-green-600  hover:underline me-4" onClick={() => editHandler(product._id)}>Upload</button>
                                                 <button type='button' className="font-medium text-blue-600  hover:underline me-4" onClick={() => editHandler(product._id)}>Edit</button>
                                                 <button type='button' className="font-medium text-red-500  hover:underline" onClick={() => deleteHandler(product._id)}>Delete</button>
                                             </td>

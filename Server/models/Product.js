@@ -8,7 +8,8 @@ const productSchema = new Schema({
     usedFor: { type: String, required: true },
     details: { type: Array },
     status: { type: String, default: "pending" },
-    seller: { type: Schema.Types.ObjectId, ref: "User", required: true }
+    seller: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    images: { type: [String] }
 }, { timestamps: true })
 
 const productModel = model("Product", productSchema)
