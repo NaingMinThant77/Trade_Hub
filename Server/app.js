@@ -35,6 +35,9 @@ app.use(authRoutes);
 const productRoutes = require("./routes/product");
 app.use(productRoutes);
 
+const adminRoutes = require("./routes/admin");
+app.use("/admin", adminRoutes);
+
 app.listen(4000, () => {
     console.log("Server is running at port 4000");
 });
