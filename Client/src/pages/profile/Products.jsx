@@ -74,9 +74,11 @@ const Products = ({ products, setActiceTabKey, setEditMode, setEditProductId, ge
                                                 {moment(product.createdAt).format('L')}
                                             </td>
                                             <td className="px-6 py-4">
-                                                {product.status === "pending" ? (<span className="bg-yellow-400 p-1 rounded-md text-white text-xs">{product.status}</span>) : (
-                                                    <span className="bg-green-400 p-1 rounded-md text-white text-xs">{product.status}</span>
-                                                )}
+                                                {product.status === "pending" && (<span className="bg-yellow-400 p-1 rounded-md text-white text-xs">{product.status}</span>)}
+                                                {product.status === "approved" && (<span className="bg-green-400 p-1 rounded-md text-white text-xs">{product.status}</span>)
+                                                }
+                                                {product.status === "reject" && (<span className="bg-red-400 p-1 rounded-md text-white text-xs">{product.status}</span>)
+                                                }
                                             </td>
                                             <td className="px-6 py-4 ">
                                                 <button type='button' className="font-medium text-green-600  hover:underline me-4" onClick={() => uploadHandler(product._id)}>Upload</button>

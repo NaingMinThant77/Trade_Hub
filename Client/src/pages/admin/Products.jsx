@@ -1,6 +1,23 @@
 import moment from "moment"
+import { changeProductStatus } from "../../apicalls/admin"
+import { message } from "antd"
 
-const Products = ({ products }) => {
+const Products = ({ products, getProducts }) => {
+
+    const handleProductStatus = async (productId, action) => {
+        try {
+            const response = await changeProductStatus(productId, action);
+            if (response.isSuccess) {
+                message.success(response.message);
+                getProducts();
+            } else {
+                throw new Error(response.message);
+            }
+        } catch (error) {
+            message.error(error.message);
+        }
+    }
+
     return (
         <section>
             <h1 className="text-3xl font-semibold my-2">Products List</h1>
@@ -47,11 +64,20 @@ const Products = ({ products }) => {
                                                 {moment(product.createdAt).format('L')}
                                             </td>
                                             <td className="px-6 py-4">
-                                                {product.status === "pending" ? (<span className="bg-yellow-400 p-1 rounded-md text-white text-xs">{product.status}</span>) : (
-                                                    <span className="bg-green-400 p-1 rounded-md text-white text-xs">{product.status}</span>
-                                                )}
+                                                {product.status === "pending" && (<span className="bg-yellow-400 p-1 rounded-md text-white text-xs">{product.status}</span>)}
+                                                {product.status === "approved" && (<span className="bg-green-400 p-1 rounded-md text-white text-xs">{product.status}</span>)
+                                                }
+                                                {product.status === "reject" && (<span className="bg-red-400 p-1 rounded-md text-white text-xs">{product.status}</span>)
+                                                }
                                             </td>
-
+                                            <td className="px-6 py-4 ">
+                                                {
+                                                    product.status === "approved" ? <button type='button' className="font-medium text-yellow-600  hover:underline me-4" onClick={() => handleProductStatus(product._id, 'pending')}>Pending</button> : <button type='button' className="font-medium text-blue-600  hover:underline me-4" onClick={() => handleProductStatus(product._id, 'approved')}>Approve</button>
+                                                }
+                                                {
+                                                    product.status === "reject" ? <button type='button' className="font-medium text-yellow-600  hover:underline me-4" onClick={() => handleProductStatus(product._id, 'pending')}>Pending</button> : <button type='button' className="font-medium text-red-600  hover:underline me-4" onClick={() => handleProductStatus(product._id, 'reject')}>Reject</button>
+                                                }
+                                            </td>
                                         </tr>
                                     ))
                                 }
