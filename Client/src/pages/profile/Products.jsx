@@ -2,13 +2,22 @@ import moment from "moment" // npm install moment --save
 import { deleteProduct } from "../../apicalls/product"
 import { message } from "antd"
 
-const Products = ({ products, setActiceTabKey, setEditMode, setEditProductId, getProducts }) => {
+const Products = ({ products, setActiceTabKey, setEditMode, setEditProductId, getProducts, setManageTabKey }) => {
 
     const editHandler = (product_id) => {
         setEditMode(true)
         setActiceTabKey("2")
         setEditProductId(product_id)
+        setManageTabKey("1")  // Switch to "Product Details"
     }
+
+    const uploadHandler = (product_id) => {
+        setEditMode(true)
+        setActiceTabKey("2")
+        setEditProductId(product_id)
+        setManageTabKey("2")  // Switch to "Upload"
+    }
+
 
     const deleteHandler = async (product_id) => {
         try {
@@ -70,7 +79,7 @@ const Products = ({ products, setActiceTabKey, setEditMode, setEditProductId, ge
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 ">
-                                                <button type='button' className="font-medium text-green-600  hover:underline me-4" onClick={() => editHandler(product._id)}>Upload</button>
+                                                <button type='button' className="font-medium text-green-600  hover:underline me-4" onClick={() => uploadHandler(product._id)}>Upload</button>
                                                 <button type='button' className="font-medium text-blue-600  hover:underline me-4" onClick={() => editHandler(product._id)}>Edit</button>
                                                 <button type='button' className="font-medium text-red-500  hover:underline" onClick={() => deleteHandler(product._id)}>Delete</button>
                                             </td>

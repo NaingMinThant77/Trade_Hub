@@ -1,13 +1,19 @@
 import { Checkbox, Col, Form, Input, message, Row, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { SquaresPlusIcon } from "@heroicons/react/24/solid"
+import { SquaresPlusIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid"
 
 import { getOldProduct, sellProduct, updateProduct } from "../apicalls/product"
 import { useEffect, useState } from 'react'
 
+import { useDispatch, useSelector } from "react-redux"
+import { setLoader } from '../store/slices/loaderSlice'
+
 const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) => {
     const [form] = Form.useForm();
     const [sellerId, setSellerId] = useState(null)
+
+    const isProcessing = useSelector(state => state.reducer.loader.isProcessing)
+    const dispatch = useDispatch()
 
     const options = [
         { value: 'electronics', label: 'Electronics', },
@@ -25,6 +31,7 @@ const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) 
     ];
 
     const onFinishHandler = async (values) => {
+        dispatch(setLoader(true))
         const payload = {
             ...values,
             product_details: values.product_details || []
@@ -50,6 +57,7 @@ const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) 
         } catch (error) {
             message.error(error.message)
         }
+        dispatch(setLoader(false))
     }
 
     const getOldProductData = async () => {
@@ -126,9 +134,8 @@ const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) 
                 <Form.Item name="product_details" label="Check if you  have :">
                     <Checkbox.Group options={checkBoxOptions} defaultValue={[]} />
                 </Form.Item>
-                <button className='font-medium text-lg text-center my-4 rounded-md bg-blue-500 text-white flex items-center gap-2 justify-center w-full'>
-                    <SquaresPlusIcon width={40} />
-                    {editMode ? "Update Products" : "Sell Products"}
+                <button className='font-medium text-lg text-center my-4 rounded-md bg-blue-500 text-white flex items-center gap-2 justify-center w-full' disabled={isProcessing}>
+                    {isProcessing ? <>isSubmitting<EllipsisHorizontalIcon width={40} /> </> : editMode ? <><SquaresPlusIcon width={40} /> Update Products</> : <><SquaresPlusIcon width={40} /> Sell Products</>}
                 </button>
             </Form>
         </section>

@@ -1,10 +1,8 @@
 import { Tabs } from "antd"
 import ProductForm from "../../components/ProductForm"
-import { useState } from "react"
 import Upload from './../../components/Upload';
 
-const ManageProduct = ({ setActiceTabKey, getProducts, editMode, editProductId }) => {
-    const [productActiveTabKey, setProductActiveTabKey] = useState("1")
+const ManageProduct = ({ setActiceTabKey, getProducts, editMode, editProductId, manageTabKey, setManageTabKey }) => {
 
     const items = [
         {
@@ -19,12 +17,9 @@ const ManageProduct = ({ setActiceTabKey, getProducts, editMode, editProductId }
         } : null
     ]
 
-    const onChangeHandler = (key) => {
-        setProductActiveTabKey(key)
-    }
-
     return (
-        <Tabs activeKey={productActiveTabKey} onChange={key => { onChangeHandler(key) }} items={items} />
+        <Tabs activeKey={manageTabKey} onChange={(key) => setManageTabKey(key)} items={items} />
+
     )
 }
 

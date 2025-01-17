@@ -12,7 +12,7 @@ app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 const fileFilterConfigure = (req, file, cb) => {
-    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg" || file.mimetype === "image/jfif") {
         cb(null, true);
     } else {
         cb(null, false);

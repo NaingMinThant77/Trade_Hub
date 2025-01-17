@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit"
 import userReducer from "./slices/userSlice"
 
+import loaderReducer from "./slices/loaderSlice"
+
 // npm i redux-persist
 import storage from "redux-persist/lib/storage"
 import { persistReducer } from "redux-persist"
@@ -13,13 +15,14 @@ const persistConfig = {
 }
 
 const combinedReducers = combineReducers({
-    user: userReducer
+    // register
+    user: userReducer,
+    loader: loaderReducer
 })
 
 const persist_reducer = persistReducer(persistConfig, combinedReducers)
 
 const store = configureStore({
-    // register
     reducer: {
         reducer: persist_reducer,
     },
