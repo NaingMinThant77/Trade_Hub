@@ -1,23 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import moment from "moment"
-import { changeUserStatus, getAllUsers } from '../../apicalls/admin';
+import { changeUserStatus } from '../../apicalls/admin';
 import { message } from 'antd';
 
-const Users = () => {
-    const [users, setUsers] = useState([])
+const Users = ({ users, getUsers }) => {
 
-    const getUsers = async () => {
-        try {
-            const response = await getAllUsers();
-            if (response.isSuccess) {
-                setUsers(response.userDocs)
-            } else {
-                throw new Error(response.message)
-            }
-        } catch (err) {
-            message.error(err.message)
-        }
-    }
 
     useEffect(_ => {
         getUsers()
