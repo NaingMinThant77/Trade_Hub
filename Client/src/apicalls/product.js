@@ -21,6 +21,19 @@ export const getAllProducts = async () => {
     }
 }
 
+// get all products
+export const getAllPaginationProducts = async ({ page }) => {
+    try {
+        const response = await axiosInstance.get("/paginationproducts", {
+            params: { page },
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message; // from server
+    }
+}
+
 // get old product
 export const getOldProduct = async (id) => {
     try {

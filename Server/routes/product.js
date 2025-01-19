@@ -19,6 +19,8 @@ router.post("/create-product", authMiddleware, [ // body() name from client
 // GET / products
 router.get("/products", authMiddleware, productController.getAllProducts)
 
+router.get("/paginationproducts", authMiddleware, productController.getAllProductsWithPagination)
+
 // get single product
 // GET / products/:id
 router.get("/products/:id", authMiddleware, productController.getOldProduct)

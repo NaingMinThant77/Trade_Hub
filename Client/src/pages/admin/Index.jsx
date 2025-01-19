@@ -75,7 +75,7 @@ const Index = () => {
                     Manage Products
                 </span>
             ),
-            children: <Products products={products} getProducts={getProducts} />,
+            children: <Products />,
         },
         {
             key: '3',
@@ -85,7 +85,7 @@ const Index = () => {
                     Manage Users
                 </span>
             ),
-            children: <Users users={users} getUsers={getUsers} />,
+            children: <Users />,
         },
         {
             key: '4',

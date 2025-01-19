@@ -16,6 +16,30 @@ exports.getAllProducts = async (req, res) => {
     }
 }
 
+exports.getAllProductsWithPagination = async (req, res) => {
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage = 7;
+    try {
+        const totalProducts = await Product.countDocuments();
+        const productDocs = await Product.find()
+            .populate("seller", "name")
+            .sort({ createdAt: -1 })
+            .skip((currentPage - 1) * perPage) // Skipping previous pages
+            .limit(perPage);  // Limiting number of products per page
+        res.status(200).json({
+            isSuccess: true,
+            productDocs,
+            totalProducts,
+            totalPages: Math.ceil(totalProducts / perPage), // Calculate total pages
+        });
+    } catch (error) {
+        return res.status(422).json({
+            isSuccess: false,
+            message: error.message
+        });
+    }
+}
+
 exports.changeProductStatus = async (req, res) => {
     const { id } = req.params;
     const { action } = req.body; // 'approve' or 'pending'
@@ -51,6 +75,30 @@ exports.getUsers = async (req, res) => {
         return res.status(200).json({
             isSuccess: true,
             userDocs
+        });
+    } catch (error) {
+        return res.status(422).json({
+            isSuccess: false,
+            message: error.message
+        });
+    }
+}
+
+exports.getAllUsersWithPagination = async (req, res) => {
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage = 5;
+    try {
+        const totalUsers = await User.countDocuments();
+        const userDocs = await User.find()
+            .select("name email role createdAt status")
+            .sort({ createdAt: -1 })
+            .skip((currentPage - 1) * perPage) // Skipping previous pages
+            .limit(perPage);  // Limiting number of products per page
+        res.status(200).json({
+            isSuccess: true,
+            userDocs,
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / perPage), // Calculate total pages
         });
     } catch (error) {
         return res.status(422).json({

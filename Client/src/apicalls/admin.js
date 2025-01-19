@@ -1,9 +1,22 @@
 import { axiosInstance } from "./axiosInstance"
 
-// get all products
+// get all product
 export const getAllProducts = async () => {
     try {
         const response = await axiosInstance.get("/admin/products", {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message; // from server
+    }
+}
+
+// get all products
+export const getAllPaginationProducts = async ({ page }) => {
+    try {
+        const response = await axiosInstance.get("/admin/paginationproducts", {
+            params: { page },
             validateStatus: () => true
         })
         return response.data
@@ -28,6 +41,18 @@ export const changeProductStatus = async (productId, action) => {
 export const getAllUsers = async () => {
     try {
         const response = await axiosInstance.get("/admin/users", {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message; // from server
+    }
+}
+
+export const getAllPaginationUsers = async ({ page }) => {
+    try {
+        const response = await axiosInstance.get("/admin/paginationusers", {
+            params: { page },
             validateStatus: () => true
         })
         return response.data

@@ -1,15 +1,30 @@
 import moment from "moment"
-import { changeProductStatus } from "../../apicalls/admin"
+import { changeProductStatus, getAllPaginationProducts } from "../../apicalls/admin"
 import { message } from "antd"
+import { useEffect, useState } from "react";
+import usePaginationProducts from "../../hooks/usePaginationProducts";
 
-const Products = ({ products, getProducts }) => {
+const Products = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Use the custom hook for pagination
+    const { totalProducts, totalPages, paginationProducts, fetchPaginationProducts } = usePaginationProducts(currentPage);
+
+    const changePage = (direction) => {
+        if (direction === "next" && currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        } else if (direction === "prev" && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     const handleProductStatus = async (productId, action) => {
         try {
             const response = await changeProductStatus(productId, action);
             if (response.isSuccess) {
                 message.success(response.message);
-                getProducts();
+                // AllPaginationProducts();
+                fetchPaginationProducts
             } else {
                 throw new Error(response.message);
             }
@@ -19,12 +34,18 @@ const Products = ({ products, getProducts }) => {
     }
 
     return (
-        <section>
-            <h1 className="text-3xl font-semibold my-2">Products List</h1>
+        <section className="py-3 pr-7">
+            <div className="flex items-center justify-between px-5">
+                <h2 className="text-3xl font-semibold my-2">Products List</h2>
+                <h2 className="text-xl my-2">Total Products - {totalProducts}</h2>
+            </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm  rtl:text-right text-gray-500 text-center">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
+                            <th scope="col" className="px-6 py-3">
+                                No of Products
+                            </th>
                             <th scope="col" className="px-6 py-3">
                                 Product name
                             </th>
@@ -47,10 +68,13 @@ const Products = ({ products, getProducts }) => {
                     </thead>
                     <tbody>
                         {
-                            products.length > 0 ? (<>
+                            paginationProducts.length > 0 ? (<>
                                 {
-                                    products.map(product => (
+                                    paginationProducts.map((product, index) => (
                                         <tr className="odd:bg-white  even:bg-gray-50  border-b " key={product._id}>
+                                            <td className="px-6 py-4">
+                                                {((currentPage - 1) * 7) + (index + 1)}
+                                            </td>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-left ">
                                                 {product.name}
                                             </th>
@@ -82,11 +106,28 @@ const Products = ({ products, getProducts }) => {
                                     ))
                                 }
                             </>) : (
-                                <p>No products added yet</p>
+                                <tr><td colSpan="6">No products added yet</td></tr>
                             )
                         }
                     </tbody>
                 </table>
+            </div>
+            <div className="flex justify-between items-center py-3">
+                <button
+                    onClick={() => changePage('prev')}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 ${currentPage === 1 ? 'bg-gray-300' : 'bg-white'} rounded`}
+                >
+                    Previous
+                </button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <button
+                    onClick={() => changePage('next')}
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 ${currentPage === totalPages ? 'bg-gray-300' : 'bg-white'} rounded`}
+                >
+                    Next
+                </button>
             </div>
 
         </section>

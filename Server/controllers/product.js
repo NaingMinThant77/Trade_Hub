@@ -62,6 +62,29 @@ exports.getAllProducts = async (req, res) => {
     }
 }
 
+exports.getAllProductsWithPagination = async (req, res) => {
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage = 7;
+    try {
+        const totalProducts = await Product.countDocuments({ seller: req.userId });
+        const productDocs = await Product.find({ seller: req.userId })
+            .sort({ createdAt: -1 })
+            .skip((currentPage - 1) * perPage) // Skipping previous pages
+            .limit(perPage);  // Limiting number of products per page
+        res.status(200).json({
+            isSuccess: true,
+            productDocs,
+            totalProducts,
+            totalPages: Math.ceil(totalProducts / perPage), // Calculate total pages
+        });
+    } catch (error) {
+        return res.status(422).json({
+            isSuccess: false,
+            message: error.message
+        });
+    }
+}
+
 exports.getOldProduct = async (req, res) => {
     try {
         const productDoc = await Product.findOne({ _id: req.params.id })
