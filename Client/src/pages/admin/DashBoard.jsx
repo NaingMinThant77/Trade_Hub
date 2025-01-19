@@ -22,7 +22,7 @@ const DashBoard = ({ products, users }) => {
             calculateTotalSales()
             setProductCount(products.length)
         }
-    }, [])
+    }, [products])
     return (
         <section>
             <div className="flex items-center gap-6 mt-2 mb-4">
@@ -30,8 +30,8 @@ const DashBoard = ({ products, users }) => {
                 <Card title={"Active Users"} count={userCount} icon={UserGroupIcon} note={"user"} />
                 <Card title={"Products"} count={productCount} icon={ShoppingCartIcon} note={"item"} />
             </div>
-            <AreaChartHero />
-            <Bar />
+            <AreaChartHero products={products} />
+            <Bar products={products} />
         </section>
     )
 }

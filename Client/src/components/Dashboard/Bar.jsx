@@ -1,31 +1,23 @@
 import { GiftIcon } from '@heroicons/react/24/outline';
 import { BarList, Card } from '@tremor/react';
 
-const data = [
-    {
-        name: 'Twitter',
-        value: 456,
-        icon: GiftIcon
-    },
-    {
-        name: 'Google',
-        value: 351,
-    },
-    {
-        name: 'GitHub',
-        value: 271,
-    },
-    {
-        name: 'Reddit',
-        value: 191,
-    },
-    {
-        name: 'Youtube',
-        value: 91,
-    },
-];
+export function Bar({ products }) {
+    const categoryCount = {}
 
-export function Bar() {
+    products.forEach(product => {
+        const productCategory = product.category
+
+        if (!categoryCount[productCategory]) {
+            categoryCount[productCategory] = 0
+        }
+        categoryCount[productCategory] += 1
+    })
+
+    const data = Object.entries(categoryCount).map(([key, val]) => ({
+        name: key.toUpperCase().replaceAll("_", " "),
+        value: val,
+    }));
+
     return (
         <Card className="mx-auto w-full mt-6 ">
             <h3 className="text-tremor-title text-tremor-content-strong dark:text-dark-tremor-content-strong font-medium">Product Count By Categories</h3>
