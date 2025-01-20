@@ -14,14 +14,14 @@ exports.register = async (req, res, next) => {
         });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(password, salt);
 
         // Store the created user document
-        const newUser = await User.create({ name, email, password: hashedPass });
+        const newUser = await User.create({ name, email, password: hashedPass, role });
 
         return res.status(201).json({
             isSuccess: true,

@@ -22,10 +22,6 @@ const usePaginationProducts = (currentPage) => {
         }
     };
 
-    console.log("Total Products Length" + totalProducts)
-    console.log("Pagination Products on Current Page:", paginationProducts);
-
-
     useEffect(() => {
         fetchPaginationProducts();
     }, [currentPage]);

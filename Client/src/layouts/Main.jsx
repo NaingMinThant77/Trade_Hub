@@ -3,7 +3,7 @@ import Nav from "../components/Nav"
 
 const Main = () => {
     return (
-        <section className="max-w-full mx-auto">
+        <section className="max-w-[85%] mx-auto">
             <Nav />
             <Outlet />
         </section>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { TrashIcon } from "@heroicons/react/24/solid"
-import { deleteSavedImages, getSavedImages, uploadProductImage } from "../apicalls/product";
+import { deleteSavedImages, getSavedImages, uploadProductImage } from "../../apicalls/product";
 import { message } from 'antd';
 
 
 import { useDispatch, useSelector } from "react-redux"
-import { setLoader } from "../store/slices/loaderSlice";
+import { setLoader } from "../../store/slices/loaderSlice";
 
 const Upload = ({ editProductId, setActiceTabKey }) => {
     const [previewImages, setPreviewImages] = useState([]);

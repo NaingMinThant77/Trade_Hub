@@ -1,7 +1,7 @@
 import moment from "moment"
-import { changeProductStatus, getAllPaginationProducts } from "../../apicalls/admin"
+import { changeProductStatus } from "../../apicalls/admin"
 import { message } from "antd"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import usePaginationProducts from "../../hooks/usePaginationProducts";
 
 const Products = () => {
@@ -23,8 +23,7 @@ const Products = () => {
             const response = await changeProductStatus(productId, action);
             if (response.isSuccess) {
                 message.success(response.message);
-                // AllPaginationProducts();
-                fetchPaginationProducts
+                fetchPaginationProducts()
             } else {
                 throw new Error(response.message);
             }

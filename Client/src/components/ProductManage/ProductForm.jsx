@@ -2,11 +2,11 @@ import { Checkbox, Col, Form, Input, message, Row, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { SquaresPlusIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/solid"
 
-import { getOldProduct, sellProduct, updateProduct } from "../apicalls/product"
+import { getOldProduct, sellProduct, updateProduct } from "../../apicalls/product"
 import { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from "react-redux"
-import { setLoader } from '../store/slices/loaderSlice'
+import { setLoader } from '../../store/slices/loaderSlice'
 
 const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) => {
     const [form] = Form.useForm();
@@ -16,12 +16,13 @@ const ProductForm = ({ setActiceTabKey, getProducts, editMode, editProductId }) 
     const dispatch = useDispatch()
 
     const options = [
-        { value: 'electronics', label: 'Electronics', },
-        { value: 'fashion', label: 'Fashion', },
-        { value: 'home_appliances', label: 'Home Appliances', },
-        { value: 'books', label: 'Books', },
-        { value: 'toys', label: 'Toys', },
-        { value: 'furniture', label: 'Furniture', },
+        { value: 'electronics_and_gadgets', label: 'Electronics and Gadgets', },
+        { value: 'clothing_and_fashion', label: 'Clothing and Fashion', },
+        { value: 'home_and_furniture', label: 'Home and Furniture', },
+        { value: 'books_and_media', label: 'Books and Media', },
+        { value: 'beauty_and_personal_care', label: 'Beauty and PersonalCare', },
+        { value: 'furnsports_and_fitnessiture', label: 'Sports and Fitness', },
+        { value: 'toys_and_games', label: 'Toys and Games', },
     ];
 
     const checkBoxOptions = [

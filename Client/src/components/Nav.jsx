@@ -6,8 +6,13 @@ const Nav = () => {
     const { userId } = useSelector(state => state.reducer.user) // from store
 
     return (
-        <nav className="bg-blue-500 text-white flex items-center justify-between gap-3 p-4">
-            <Link to={"/"} className="font-bold text-2xl">POINT.IO</Link>
+        <nav className=" text-blue-600 flex items-center justify-between gap-3 py-4 mb-4">
+            <Link to={"/"} className="font-bold text-2xl">TradeHub</Link>
+            <div className="flex items-center gap-3">
+                <Link to={"/about"}>About</Link>
+                <Link to={"/about"}>Contact</Link>
+                <Link to={"/about"}>Q&A</Link>
+            </div>
             {
                 userId
                     ? (
