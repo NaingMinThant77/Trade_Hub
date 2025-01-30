@@ -27,8 +27,8 @@ const Home = () => {
 
     return (
         <section>
-            <Hero />
-            <Filter />
+            <Hero setProducts={setProducts} getProducts={getProducts} />
+            <Filter setProducts={setProducts} getProducts={getProducts} />
             <div className='flex max-w-4xl mx-auto flex-wrap'>
                 {
                     products.map(product => (

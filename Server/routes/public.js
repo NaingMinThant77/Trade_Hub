@@ -6,4 +6,8 @@ const publicController = require("../controllers/public");
 // GET / api/products
 router.get("/products", publicController.getAllProducts)
 
+// get products by filters
+// GET / api/products/filters
+router.get("/products/filters", publicController.getProductsByFIlter)
+
 module.exports = router;
