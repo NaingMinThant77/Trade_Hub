@@ -46,3 +46,23 @@ exports.getProductsByFIlter = async (req, res) => {
         });
     }
 }
+
+exports.getProductById = async (req, res) => {
+    try {
+        const productDoc = await Product.findById(req.params.id).populate("seller", "name email")
+
+        if (!productDoc) {
+            throw new Error("Product not found.")
+        }
+
+        return res.status(200).json({
+            isSuccess: true,
+            productDoc
+        });
+    } catch (error) {
+        return res.status(422).json({
+            isSuccess: false,
+            message: error.message
+        });
+    }
+}

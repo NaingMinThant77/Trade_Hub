@@ -21,3 +21,14 @@ export const getProductsByFilters = async (key, value) => {
         return error.message;
     }
 }
+
+export const getProductsById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/api/products/${id}`, {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message;
+    }
+}

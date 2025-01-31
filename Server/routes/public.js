@@ -10,4 +10,8 @@ router.get("/products", publicController.getAllProducts)
 // GET / api/products/filters
 router.get("/products/filters", publicController.getProductsByFIlter)
 
+// get product by id
+// GET /api/products/:id
+router.get("/products/:id", publicController.getProductById)
+
 module.exports = router;

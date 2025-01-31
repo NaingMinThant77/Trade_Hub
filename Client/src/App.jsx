@@ -7,6 +7,7 @@ import Home from "./pages/HomePage/Home"
 import Profile from "./pages/profile/Index"
 import AuthProvider from "./providers/AuthProvider"
 import Admin from "./pages/admin/Index"
+import Details from "./pages/HomePage/Details"
 
 const App = () => {
 
@@ -17,7 +18,8 @@ const App = () => {
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
         { path: "/profile", element: <AuthProvider><Profile /></AuthProvider> },
-        { path: "/admin", element: <AuthProvider><Admin /></AuthProvider> }
+        { path: "/admin", element: <AuthProvider><Admin /></AuthProvider> },
+        { path: "/products/:id", element: <Details /> }
       ]
     },
   ])
