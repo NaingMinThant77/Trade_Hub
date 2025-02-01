@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { getProductsById } from "../../apicalls/public";
 import { message } from "antd";
 import TradeHub from "../../images/TradeHub.jpg"
+
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoader } from "../../store/slices/loaderSlice"
+import { RotatingLines } from "react-loader-spinner"
 
 const Details = () => {
     const [product, setProduct] = useState({})
     const [selectedImage, setSelectedImage] = useState(0)
     const params = useParams();
 
+    const dispatch = useDispatch()
+    const { isProcessing } = useSelector(state => state.reducer.loader)
+
     const fineById = async () => {
+        dispatch(setLoader(true))
         try {
             const response = await getProductsById(params.id);
             if (response.isSuccess) {
@@ -20,6 +28,7 @@ const Details = () => {
         } catch (err) {
             message.error(err.message)
         }
+        dispatch(setLoader(false))
     }
 
     useEffect(() => {
@@ -27,73 +36,88 @@ const Details = () => {
     }, [])
 
     return (
-        <section className="flex items-center justify-between">
+        <section className={`flex mt-20 ${isProcessing ? "items-center justify-center" : "items-start justify-between"}`}>
             {
-                product && product.category && product.seller && <>
-                    <div className="w-1/3">
+                isProcessing ?
+                    <RotatingLines
+                        visible={isProcessing}
+                        height="50"
+                        width="50"
+                        color="#3b82f6"
+                        strokeWidth="5"
+                        animationDuration="0.75"
+                        ariaLabel="rotating-lines-loading"
+                    /> : <>
                         {
-                            product && product.images && product.images.length > 0 ? (
-                                <>
-                                    <img src={product.images[selectedImage]} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
-                                    <div className="flex items-center gap-3 mt-3">
+                            product && product.category && product.seller && <>
+                                <div className="w-1/3">
+                                    {
+                                        product && product.images && product.images.length > 0 ? (
+                                            <>
+                                                <img src={product.images[selectedImage]} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
+                                                <div className="flex items-center gap-3 mt-3">
+                                                    {
+                                                        product.images.map((i, index) => <div key={i} className={`border-4 overflow-hidden border-blue-500 rounded-lg p-2 ${selectedImage === index && "border-dashed"}`}>
+                                                            <img src={i} alt={product.name} className="w-24 h-24 object-cover"
+                                                                onClick={() => setSelectedImage(index)} />
+                                                        </div>)
+                                                    }
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <img src={TradeHub} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
+                                                <p className="font-medium my-2 text-red-600">This product does not include images.</p></>
+                                        )}
+                                </div>
+                                <div className="w-2/3 px-20">
+                                    <div className="text-right my-4 cursor-pointer">
+                                        <Link to={"/"} className="border p-2 rounded-lg bg-blue-500 text-white hover:bg-white hover:text-blue-500">Back</Link>
+                                    </div>
+                                    <h1 className="text-3xl font-bold my-1">{product.name}</h1>
+                                    <p className="text-gray-500 font-medium leading-6 mb-4">{product.description}</p>
+                                    <hr />
+                                    <h1 className="text-2xl font-semibold my-2">Informations</h1>
+                                    <div className="flex justify-between mb-4">
+                                        <div className="font-medium space-y-2">
+                                            <p>Type</p>
+                                            <p>Used For</p>
+                                        </div>
+                                        <div className="text-gray-600 space-y-2 text-right">
+                                            <p>{product.category.toUpperCase().replaceAll("_", " ")}</p>
+                                            <p>{product.usedFor}</p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="mb-4">
+                                        <h1 className="text-2xl font-semibold my-2">Details</h1>
                                         {
-                                            product.images.map((i, index) => <div key={i} className={`border-4 overflow-hidden border-blue-500 rounded-lg p-2 ${selectedImage === index && "border-dashed"}`}>
-                                                <img src={i} alt={product.name} className="w-24 h-24 object-cover"
-                                                    onClick={() => setSelectedImage(index)} />
-                                            </div>)
+                                            product.details.map((d, i) =>
+                                                <div className="flex justify-between" key={i}>
+                                                    <div className="font-medium space-y-2">
+                                                        <p>{d}</p>
+                                                    </div>
+                                                    <div className="text-gray-600 space-y-2">
+                                                        <p>include</p>
+                                                    </div>
+                                                </div>)
                                         }
                                     </div>
-                                </>
-                            ) : (
-                                <>
-                                    <img src={TradeHub} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
-                                    <p className="font-medium my-2 text-red-600">This product does not include images.</p></>
-                            )}
-                    </div>
-                    <div className="w-2/3 px-20">
-                        <h1 className="text-3xl font-bold my-1">{product.name}</h1>
-                        <p className="text-gray-500 font-medium leading-6 mb-4">{product.description}</p>
-                        <hr />
-                        <h1 className="text-2xl font-semibold my-2">Informations</h1>
-                        <div className="flex justify-between mb-4">
-                            <div className="font-medium space-y-2">
-                                <p>Type</p>
-                                <p>Used For</p>
-                            </div>
-                            <div className="text-gray-600 space-y-2 text-right">
-                                <p>{product.category.toUpperCase().replaceAll("_", " ")}</p>
-                                <p>{product.usedFor}</p>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="mb-4">
-                            <h1 className="text-2xl font-semibold my-2">Details</h1>
-                            {
-                                product.details.map((d, i) =>
-                                    <div className="flex justify-between" key={i}>
+                                    <hr />
+                                    <h1 className="text-2xl font-semibold my-2">Seller Information</h1>
+                                    <div className="flex justify-between mb-4">
                                         <div className="font-medium space-y-2">
-                                            <p>{d}</p>
+                                            <p>Name</p>
+                                            <p>E-mail</p>
                                         </div>
-                                        <div className="text-gray-600 space-y-2">
-                                            <p>include</p>
+                                        <div className="text-gray-600 space-y-2 text-right">
+                                            <p>{product.seller.name}</p>
+                                            <p>{product.seller.email}</p>
                                         </div>
-                                    </div>)
-                            }
-                        </div>
-                        <hr />
-                        <h1 className="text-2xl font-semibold my-2">Seller Information</h1>
-                        <div className="flex justify-between mb-4">
-                            <div className="font-medium space-y-2">
-                                <p>Name</p>
-                                <p>E-mail</p>
-                            </div>
-                            <div className="text-gray-600 space-y-2 text-right">
-                                <p>{product.seller.name}</p>
-                                <p>{product.seller.email}</p>
-                            </div>
-                        </div>
-                    </div>
-                </>
+                                    </div>
+                                </div>
+                            </>
+                        }</>
             }
         </section>
     )

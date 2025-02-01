@@ -52,4 +52,16 @@ router.get("/product-images/:id", authMiddleware, productController.getSavedImag
 // DELETE /products/images/destroy/:productId/:imgToDelete
 router.delete("/products/images/destroy/:productId/:imgToDelete", authMiddleware, productController.deleteProductImages)
 
+// save product
+// POST /saved-products/:id
+router.post("/saved-products/:id", authMiddleware, productController.savedProduct)
+
+// get save product
+// GET /saved-products
+router.get("/saved-products", authMiddleware, productController.getSavedProduct)
+
+// delete save product
+// DELETE /unsaved-products/:id
+router.delete("/unsaved-products/:id", authMiddleware, productController.unSavedProduct)
+
 module.exports = router;

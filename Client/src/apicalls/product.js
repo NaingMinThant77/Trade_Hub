@@ -105,3 +105,39 @@ export const deleteSavedImages = async (payload) => {
         return error.message;
     }
 }
+
+// save product
+export const savedProduct = async (id) => {
+    try {
+        const response = await axiosInstance.post(`/saved-products/${id}`, {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message;
+    }
+}
+
+// get saved products
+export const getSavedProducts = async () => {
+    try {
+        const response = await axiosInstance.get(`/saved-products`, {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message;
+    }
+}
+
+// delete saved product
+export const unsavedProducts = async (id) => {
+    try {
+        const response = await axiosInstance.delete(`/unsaved-products/${id}`, {
+            validateStatus: () => true
+        })
+        return response.data
+    } catch (error) {
+        return error.message;
+    }
+}

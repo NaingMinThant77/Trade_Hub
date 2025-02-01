@@ -8,6 +8,7 @@ import Profile from "./pages/profile/Index"
 import AuthProvider from "./providers/AuthProvider"
 import Admin from "./pages/admin/Index"
 import Details from "./pages/HomePage/Details"
+import Index from "./pages/savedProducts/Index"
 
 const App = () => {
 
@@ -19,7 +20,8 @@ const App = () => {
         { path: "/login", element: <Login /> },
         { path: "/profile", element: <AuthProvider><Profile /></AuthProvider> },
         { path: "/admin", element: <AuthProvider><Admin /></AuthProvider> },
-        { path: "/products/:id", element: <Details /> }
+        { path: "/products/:id", element: <Details /> },
+        { path: "/saved-products", element: <AuthProvider><Index /></AuthProvider> }
       ]
     },
   ])

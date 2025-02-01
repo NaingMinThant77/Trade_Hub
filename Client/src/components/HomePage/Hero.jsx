@@ -3,10 +3,16 @@ import { getProductsByFilters } from "../../apicalls/public";
 import { message } from "antd";
 import { useState } from "react";
 
+import { useDispatch } from 'react-redux';
+import { setLoader } from "../../store/slices/loaderSlice"
+
 const Hero = ({ setProducts, getProducts }) => {
     const [searchKey, setSearchKey] = useState(null);
 
+    const dispatch = useDispatch()
+
     const searchHandler = async () => {
+        dispatch(setLoader(true))
         try {
             const response = await getProductsByFilters("searchKey", searchKey);
             if (response.isSuccess) {
@@ -17,6 +23,7 @@ const Hero = ({ setProducts, getProducts }) => {
         } catch (err) {
             message.error(err.message)
         }
+        dispatch(setLoader(false))
     }
 
     const clearHandler = () => {

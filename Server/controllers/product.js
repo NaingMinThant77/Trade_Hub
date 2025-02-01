@@ -1,5 +1,6 @@
 const Product = require("../models/Product")
 const { validationResult } = require("express-validator")
+const SavedProduct = require("../models/SavedProduct")
 
 require("dotenv").config()
 const { v2: cloudinary } = require('cloudinary');
@@ -261,6 +262,67 @@ exports.deleteProductImages = async (req, res) => {
         });
     } catch (err) {
         return res.status(404).json({
+            isSuccess: false,
+            message: err.message
+        });
+    }
+}
+
+exports.savedProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await SavedProduct.create({
+            user_id: req.userId,
+            product_id: id
+        })
+
+        return res.status(200).json({
+            isSuccess: true,
+            message: "Product Saved"
+        });
+
+    } catch (err) {
+        return res.status(401).json({
+            isSuccess: false,
+            message: err.message
+        });
+    }
+}
+
+exports.getSavedProduct = async (req, res) => {
+    try {
+        const productDocs = await SavedProduct.find({ user_id: req.userId }).populate('product_id', "name category images description")
+        if (!productDocs || productDocs.length === 0) {
+            throw new Error("No Products are not saved yet!")
+        }
+
+        return res.status(200).json({
+            isSuccess: true,
+            productDocs
+        });
+    } catch (err) {
+        return res.status(404).json({
+            isSuccess: false,
+            message: err.message
+        });
+    }
+}
+
+exports.unSavedProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await SavedProduct.findOneAndDelete({
+            product_id: id
+        })
+
+        return res.status(200).json({
+            isSuccess: true,
+            message: "Product Removed from the list."
+        });
+    } catch (err) {
+        return res.status(500).json({
             isSuccess: false,
             message: err.message
         });
