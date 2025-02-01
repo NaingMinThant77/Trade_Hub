@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom"
 import TradeHub from "../../images/TradeHub.jpg"
 import { BookmarkIcon } from "@heroicons/react/24/outline"
+import { BookmarkIcon as BookMark } from "@heroicons/react/24/solid"
 import { savedProduct, unsavedProducts } from "../../apicalls/product"
 import { message } from "antd"
 import { BookmarkSlashIcon } from "@heroicons/react/24/solid"
+import { useSelector } from "react-redux"
 
-const Card = ({ product, saved = false, getProducts }) => {
+const Card = ({ product, saved = false, getAllProductsSaved, savedProducts, getProducts }) => {
+    const { userId } = useSelector(state => state.reducer.user)
 
     const productStatusHandler = async (id) => {
         try {
@@ -17,47 +20,66 @@ const Card = ({ product, saved = false, getProducts }) => {
             }
 
             if (response.isSuccess) {
-                if (saved) { getProducts() }
                 message.success(response.message)
+                if (!saved) {
+                    getProducts();
+                }
+                getAllProductsSaved()
             } else {
                 throw new Error(response.message)
             }
         } catch (err) {
-            message.error(err.message)
+            message.error(err.message || "Something went wrong!!")
         }
     }
 
-    if (!product) return null; // Prevents rendering if product is undefined
+    const isProductSaved = (product) => {
+        return savedProducts.some(p => p.product_id._id === product._id)
+    }
 
     const imageUrl = product.images && product.images.length > 0 ? product.images[0] : TradeHub;
 
     return (
-        <div className={`${saved ? 'basis-1/4' : "basis-1/2"} px-4 mb-4`}>
-            <Link to={`/products/${product._id}`}>
-                <img src={imageUrl} alt={product.name || "Product"} className="w-full h-52 object-cover" />
-            </Link>
+        <>
+            {
+                product && <div className={`bg-white p-4 rounded-lg`}>
+                    <Link to={`/products/${product._id}`}>
+                        <img src={imageUrl} alt={product.name || "Product"} className="w-full h-52 object-cover rounded-lg" />
+                    </Link>
 
-            <p className="text-white text-xs bg-blue-600 rounded-lg p-1 w-fit font-medium my-2">
-                {product.category ? product.category.toUpperCase().replaceAll("_", " ") : "UNKNOWN"}
-            </p>
+                    <p className="text-white text-xs bg-blue-600 rounded-lg p-1 w-fit font-medium my-2">
+                        {product.category ? product.category.toUpperCase().replaceAll("_", " ") : "UNKNOWN"}
+                    </p>
 
-            <div className="flex items-center justify-between">
-                <Link to={`/products/${product._id}`}>
-                    <p className="text-xl font-bold font-gray-700">{product.name || "Unnamed Product"}</p>
-                </Link>
-                {
-                    saved ? <BookmarkSlashIcon className="w-6 h-8 text-blue-600 cursor-pointer"
-                        onClick={() => productStatusHandler(product._id)} /> : <BookmarkIcon
-                        className="w-6 h-8 text-blue-600 cursor-pointer"
-                        onClick={() => productStatusHandler(product._id)}
-                    />
-                }
-            </div>
+                    <div className="flex items-center justify-between">
+                        <Link to={`/products/${product._id}`}>
+                            <p className="text-xl font-bold font-gray-700">{product.name || "Unnamed Product"}</p>
+                        </Link>
+                        {
+                            userId && <> {
+                                saved ? <BookmarkSlashIcon className="w-6 h-8 text-blue-600 cursor-pointer"
+                                    onClick={() => productStatusHandler(product._id)} /> : <>{
+                                        isProductSaved(product) ?
+                                            <BookMark
+                                                className="w-6 h-8 text-blue-600"
+                                                onClick={() => message.warning("Product is already saved!")}
+                                            /> : <BookmarkIcon
+                                                className="w-6 h-8 text-blue-600 cursor-pointer"
+                                                onClick={() => productStatusHandler(product._id)}
+                                            />}
+                                </>
+                            }</>
+                        }
+                    </div>
 
-            <p className="font-gray-500">
-                {product.description ? product.description.slice(0, 80) : "No description available."}
-            </p>
-        </div>
+                    <p className="font-gray-500">
+                        {product.description ? product.description.slice(0, 80) : "No description available."}
+                    </p>
+                    <hr />
+                    <p className="text-lg font-semibold mt-2 text-right">{product.price} Kyats</p>
+                </div>
+            }
+        </>
     );
 };
 

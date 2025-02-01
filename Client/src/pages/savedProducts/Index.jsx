@@ -6,14 +6,17 @@ import Card from "../../components/HomePage/Card";
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from "../../store/slices/loaderSlice"
 import { RotatingLines } from "react-loader-spinner"
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+    const navigate = useNavigate()
     const [savedProducts, setSavedProducts] = useState([])
 
     const dispatch = useDispatch()
     const { isProcessing } = useSelector(state => state.reducer.loader)
 
-    const getProducts = async () => {
+    const getAllProductsSaved = async () => {
         dispatch(setLoader(true))
         try {
             const response = await getSavedProducts();
@@ -27,13 +30,17 @@ const Index = () => {
         }
         dispatch(setLoader(false))
     }
+
     useEffect(_ => {
-        getProducts()
+        getAllProductsSaved()
     }, [])
 
     return (
         <section>
-            <h1 className="text-2xl font-bold my-4 text-center">Saved Produvts List</h1>
+            <div className="flex justify-between my-2">
+                <h1 className="text-2xl font-bold my-4 text-center">Saved Products List</h1>
+                <ArrowLeftIcon width={30} height={30} className="text-blue-600 cursor-pointer" onClick={() => { navigate(-1) }} />
+            </div>
             {
                 isProcessing ? <div className="flex items-center justify-center">
                     <RotatingLines
@@ -45,15 +52,15 @@ const Index = () => {
                         animationDuration="0.75"
                         ariaLabel="rotating-lines-loading"
                     />
-                </div> : <div className="flex gap-2">
+                </div> : <div className="grid grid-cols-4 gap-4">
                     {
-                        savedProducts && savedProducts.length > 0 && <>
-                            {savedProducts && savedProducts.length > 0 ? (
-                                savedProducts.map(product => product && <Card product={product.product_id} key={product._id} saved={true} getProducts={getProducts} />)
-                            ) : (
-                                <p>No saved products available.</p>
+                        savedProducts && savedProducts.length > 0 ? <>
+                            {savedProducts && savedProducts.length > 0 && (
+                                savedProducts.map(product => product && <Card product={product.product_id} key={product._id} saved={true} getAllProductsSaved={getAllProductsSaved} />)
                             )}
-                        </>
+                        </> : (
+                            <p>No products saved yet.</p>
+                        )
                     }
                 </div>
             }

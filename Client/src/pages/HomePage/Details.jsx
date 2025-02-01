@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { getProductsById } from "../../apicalls/public";
-import { message } from "antd";
 import TradeHub from "../../images/TradeHub.jpg"
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
+import { Form, Input, message } from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from "../../store/slices/loaderSlice"
 import { RotatingLines } from "react-loader-spinner"
 
 const Details = () => {
+    const navigate = useNavigate()
     const [product, setProduct] = useState({})
     const [selectedImage, setSelectedImage] = useState(0)
     const params = useParams();
 
     const dispatch = useDispatch()
     const { isProcessing } = useSelector(state => state.reducer.loader)
+    const { userId } = useSelector(state => state.reducer.user)
 
     const fineById = async () => {
         dispatch(setLoader(true))
@@ -71,19 +74,23 @@ const Details = () => {
                                         )}
                                 </div>
                                 <div className="w-2/3 px-20">
-                                    <div className="text-right my-4 cursor-pointer">
-                                        <Link to={"/"} className="border p-2 rounded-lg bg-blue-500 text-white hover:bg-white hover:text-blue-500">Back</Link>
+                                    <div className="flex justify-between">
+                                        <div className="w-3/4">
+                                            <h1 className="text-3xl font-bold my-1">{product.name}</h1>
+                                            <p className="text-gray-500 font-medium leading-6 mb-4">{product.description}</p>
+                                        </div>
+                                        <ArrowLeftIcon width={30} height={30} className="text-blue-600 cursor-pointer" onClick={() => { navigate(-1) }} />
                                     </div>
-                                    <h1 className="text-3xl font-bold my-1">{product.name}</h1>
-                                    <p className="text-gray-500 font-medium leading-6 mb-4">{product.description}</p>
                                     <hr />
                                     <h1 className="text-2xl font-semibold my-2">Informations</h1>
                                     <div className="flex justify-between mb-4">
                                         <div className="font-medium space-y-2">
-                                            <p>Type</p>
+                                            <p>Price</p>
+                                            <p>Category</p>
                                             <p>Used For</p>
                                         </div>
                                         <div className="text-gray-600 space-y-2 text-right">
+                                            <p>{product.price} Kyats</p>
                                             <p>{product.category.toUpperCase().replaceAll("_", " ")}</p>
                                             <p>{product.usedFor}</p>
                                         </div>
@@ -115,6 +122,27 @@ const Details = () => {
                                             <p>{product.seller.email}</p>
                                         </div>
                                     </div>
+                                    <hr />
+                                    <h1 className="text-2xl font-semibold my-2">Bids</h1>
+                                    {
+                                        userId ? <div className="mb-10">
+                                            <Form layout="vertical" onFinish={() => { window.alert("Connected") }}>
+                                                <Form.Item name="message" label="Text : " rules={[
+                                                    { required: true, message: "Message must be included" },
+                                                ]} hasFeedback>
+                                                    <Input placeholder='Write something ...'></Input>
+                                                </Form.Item>
+                                                <Form.Item name="phone" label="Phone Number : " rules={[
+                                                    { required: true, message: "Phone must be included" },
+                                                ]} hasFeedback>
+                                                    <Input placeholder='phone number ...'></Input>
+                                                </Form.Item>
+                                                <div className="text-right">
+                                                    <button className="text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600">Submit Message</button>
+                                                </div>
+                                            </Form>
+                                        </div> : <p className="font-medium text-red-600"><Link to={"/login"} className="underline">Login</Link> or <Link to={"/register"} className="underline">Register</Link> to bid this product.</p>
+                                    }
                                 </div>
                             </>
                         }</>
