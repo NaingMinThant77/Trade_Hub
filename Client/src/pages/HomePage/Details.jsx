@@ -8,6 +8,9 @@ import { Form, Input, message } from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from "../../store/slices/loaderSlice"
 import { RotatingLines } from "react-loader-spinner"
+import { getAllBids, saveNewBid } from "../../apicalls/bid";
+
+import { formatDistanceToNow } from "date-fns"
 
 const Details = () => {
     const navigate = useNavigate()
@@ -18,6 +21,11 @@ const Details = () => {
     const dispatch = useDispatch()
     const { isProcessing } = useSelector(state => state.reducer.loader)
     const { userId } = useSelector(state => state.reducer.user)
+
+    const [isPlace, setIsPlace] = useState(false);
+    const [form] = Form.useForm();
+
+    const [bids, setBids] = useState([]);
 
     const fineById = async () => {
         dispatch(setLoader(true))
@@ -34,9 +42,45 @@ const Details = () => {
         dispatch(setLoader(false))
     }
 
+    const getBids = async () => {
+        dispatch(setLoader(true))
+        try {
+            const response = await getAllBids(params.id);
+            if (response.isSuccess) {
+                setBids(response.bidDocs)
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (err) {
+            console.error(err.message)
+        }
+        dispatch(setLoader(false))
+    }
+
     useEffect(() => {
         fineById()
+        getBids()
     }, [])
+
+    const onFinishHandler = async (values) => {
+        setIsPlace(true)
+        values.product_id = product._id;
+        values.seller_id = product.seller._id
+        values.buyer_id = userId._id;
+        try {
+            const response = await saveNewBid(values);
+            if (response.isSuccess) {
+                getBids()
+                form.resetFields(); //clear form data
+                message.success(response.message)
+            } else {
+                throw new Error(response.message)
+            }
+        } catch (err) {
+            message.error(err.message)
+        }
+        setIsPlace(false)
+    }
 
     return (
         <section className={`flex mt-20 ${isProcessing ? "items-center justify-center" : "items-start justify-between"}`}>
@@ -123,25 +167,45 @@ const Details = () => {
                                         </div>
                                     </div>
                                     <hr />
-                                    <h1 className="text-2xl font-semibold my-2">Bids</h1>
-                                    {
-                                        userId ? <div className="mb-10">
-                                            <Form layout="vertical" onFinish={() => { window.alert("Connected") }}>
-                                                <Form.Item name="message" label="Text : " rules={[
-                                                    { required: true, message: "Message must be included" },
-                                                ]} hasFeedback>
-                                                    <Input placeholder='Write something ...'></Input>
-                                                </Form.Item>
-                                                <Form.Item name="phone" label="Phone Number : " rules={[
-                                                    { required: true, message: "Phone must be included" },
-                                                ]} hasFeedback>
-                                                    <Input placeholder='phone number ...'></Input>
-                                                </Form.Item>
-                                                <div className="text-right">
-                                                    <button className="text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600">Submit Message</button>
+                                    <h1 className="text-2xl font-semibold my-2">Place Your Bids</h1>
+                                    {!userId ? <p className="font-medium text-red-600"><Link to={"/login"} className="underline">Login</Link> or <Link to={"/register"} className="underline">Register</Link> to bid this product.</p>
+                                        : <>
+                                            {userId._id !== product.seller._id ? <div className="mb-10">
+                                                <Form layout="vertical" onFinish={onFinishHandler}>
+                                                    <Form.Item name="message" label="Text : " rules={[
+                                                        { required: true, message: "Message must be included" },
+                                                    ]} hasFeedback>
+                                                        <Input placeholder='Write something ...'></Input>
+                                                    </Form.Item>
+                                                    <Form.Item name="phone" label="Phone Number : " rules={[
+                                                        { required: true, message: "Phone must be included" },
+                                                    ]} hasFeedback>
+                                                        <Input type="number" placeholder='phone number ...'></Input>
+                                                    </Form.Item>
+                                                    <div className="text-right">
+                                                        <button className="text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600" disabled={isPlace}>{isPlace ? "Submitting Message ..." : "Submit Message"}</button>
+                                                    </div>
+                                                </Form>
+                                            </div> : <>{
+                                                userId._id === product.seller._id && <p className="font-medium text-red-600">You are the product seller / owner. You cannot place bid</p>
+                                            }</>}
+                                        </>
+                                    }
+                                    <hr />
+                                    <h1 className="text-2xl font-semibold my-2">Recent Bids</h1>
+                                    <div>
+                                        {
+                                            bids.map((bid, i) => (
+                                                <div key={i} className="mb-4 bg-white px-2 py-4 rounded-lg">
+                                                    <h5 className="font-medium text-base">{bid.buyer_id.name}</h5>
+                                                    <p className="text-xs text-gray-400">{formatDistanceToNow(new Date(bid.createdAt))} ago</p>
+                                                    <p className="text-gray-600 text-sm font-medium">{bid.text}</p>
                                                 </div>
-                                            </Form>
-                                        </div> : <p className="font-medium text-red-600"><Link to={"/login"} className="underline">Login</Link> or <Link to={"/register"} className="underline">Register</Link> to bid this product.</p>
+                                            ))
+                                        }
+                                    </div>
+                                    {
+                                        bids.length === 0 && <p className="my-2 font-medium text-red-600">No bids are not placed yet!</p>
                                     }
                                 </div>
                             </>

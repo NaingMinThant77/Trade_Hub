@@ -1,4 +1,3 @@
-import { message } from "antd"
 import { getSavedProducts } from '../../apicalls/product';
 import { useState, useEffect } from "react";
 import Card from "../../components/HomePage/Card";
@@ -26,12 +25,12 @@ const Index = () => {
                 throw new Error(response.message)
             }
         } catch (err) {
-            message.error(err.message)
+            console.error(err.message)
         }
         dispatch(setLoader(false))
     }
 
-    useEffect(_ => {
+    useEffect(() => {
         getAllProductsSaved()
     }, [])
 
@@ -59,7 +58,7 @@ const Index = () => {
                                 savedProducts.map(product => product && <Card product={product.product_id} key={product._id} saved={true} getAllProductsSaved={getAllProductsSaved} />)
                             )}
                         </> : (
-                            <p>No products saved yet.</p>
+                            <p className='font-medium text-red-600 my-2'>No products are saved yet.</p>
                         )
                     }
                 </div>

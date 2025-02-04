@@ -42,7 +42,7 @@ const Home = () => {
                 throw new Error(response.message)
             }
         } catch (err) {
-            message.error(err.message)
+            console.error(err.message)
         }
         dispatch(setLoader(false))
     }
