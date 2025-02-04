@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require("express-validator");
 const productController = require("../controllers/product");
 const bidController = require("../controllers/Bid");
+const notificationController = require("../controllers/Notification");
 const authMiddleware = require("../middlewares/auth")
 
 // add product
@@ -74,5 +75,13 @@ router.post("/add-bid", [
 // get all bids
 // GET /bids/:product_id
 router.get("/bids/:product_id", bidController.getAllBids)
+
+// push noti
+// POST /notify
+router.post("/notify", authMiddleware, notificationController.pushNotification)
+
+// get noti
+// GET /notifications
+router.get("/notifications", authMiddleware, notificationController.getNotifications)
 
 module.exports = router;

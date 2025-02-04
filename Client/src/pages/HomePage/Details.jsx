@@ -11,6 +11,7 @@ import { RotatingLines } from "react-loader-spinner"
 import { getAllBids, saveNewBid } from "../../apicalls/bid";
 
 import { formatDistanceToNow } from "date-fns"
+import { notify } from "../../apicalls/notification";
 
 const Details = () => {
     const navigate = useNavigate()
@@ -67,12 +68,15 @@ const Details = () => {
         values.product_id = product._id;
         values.seller_id = product.seller._id
         values.buyer_id = userId._id;
+
         try {
             const response = await saveNewBid(values);
             if (response.isSuccess) {
                 getBids()
                 form.resetFields(); //clear form data
                 message.success(response.message)
+
+                await notify({ title: "New bid placed.", message: `New bid is placed in ${product.name} by ${userId.name}`, owner_id: product.seller._id, product_id: product._id, phone_number: values.phone })
             } else {
                 throw new Error(response.message)
             }
@@ -171,7 +175,7 @@ const Details = () => {
                                     {!userId ? <p className="font-medium text-red-600"><Link to={"/login"} className="underline">Login</Link> or <Link to={"/register"} className="underline">Register</Link> to bid this product.</p>
                                         : <>
                                             {userId._id !== product.seller._id ? <div className="mb-10">
-                                                <Form layout="vertical" onFinish={onFinishHandler}>
+                                                <Form form={form} layout="vertical" onFinish={onFinishHandler}>
                                                     <Form.Item name="message" label="Text : " rules={[
                                                         { required: true, message: "Message must be included" },
                                                     ]} hasFeedback>
@@ -187,7 +191,7 @@ const Details = () => {
                                                     </div>
                                                 </Form>
                                             </div> : <>{
-                                                userId._id === product.seller._id && <p className="font-medium text-red-600">You are the product seller / owner. You cannot place bid</p>
+                                                userId._id === product.seller._id && <p className="font-medium text-red-600 mb-2">You are the product seller / owner. You cannot place bid</p>
                                             }</>}
                                         </>
                                     }
