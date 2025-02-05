@@ -1,9 +1,10 @@
 import { axiosInstance } from "./axiosInstance"
 
 // get all product
-export const getAllProducts = async () => {
+export const getAllProducts = async (page, perPage) => {
     try {
-        const response = await axiosInstance.get("/api/products")
+        // const response = await axiosInstance.get("/api/products")
+        const response = await axiosInstance.get(`/api/products?page=${page}&perPage=${perPage}`)
         return response.data
     } catch (error) {
         return error.message;

@@ -3,7 +3,7 @@ import Card from '../../components/HomePage/Card'
 import Filter from '../../components/HomePage/Filter'
 import Hero from '../../components/HomePage/Hero'
 import { getAllProducts } from '../../apicalls/public'
-import { message } from 'antd'
+import { message, Pagination } from 'antd'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from "../../store/slices/loaderSlice"
@@ -17,12 +17,17 @@ const Home = () => {
     const dispatch = useDispatch()
     const { isProcessing } = useSelector(state => state.reducer.loader)
 
-    const getProducts = async () => {
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
+
+    const getProducts = async (page = 1, perPage = 6) => {
         dispatch(setLoader(true))
         try {
-            const response = await getAllProducts();
+            const response = await getAllProducts(page, perPage);
             if (response.isSuccess) {
                 setProducts(response.productDocs)
+                setCurrentPage(response.currentPage)
+                setTotalPages(response.totalPages)
             } else {
                 throw new Error(response.message)
             }
@@ -48,9 +53,13 @@ const Home = () => {
     }
 
     useEffect(() => {
-        getProducts()
+        getProducts(1, 6)
         getAllProductsSaved()
     }, [])
+
+    const handlePagination = (page, perPage) => {
+        getProducts(page, perPage)
+    }
 
     return (
         <section>
@@ -67,16 +76,21 @@ const Home = () => {
                         animationDuration="0.75"
                         ariaLabel="rotating-lines-loading"
                     />
-                </div> : <div className='grid grid-cols-2 gap-4 max-w-4xl mx-auto'>
-                    {
-                        products.map(product => (
-                            <Card key={product._id} product={product} getProducts={getProducts} savedProducts={savedProducts} getAllProductsSaved={getAllProductsSaved} />
-                        ))
-                    }
-                </div>
+                </div> : <>
+                    <div className='grid grid-cols-3 gap-4 max-w-5xl mx-auto'>
+                        {
+                            products.map(product => (
+                                <Card key={product._id} product={product} getProducts={getProducts} savedProducts={savedProducts} getAllProductsSaved={getAllProductsSaved} />
+                            ))
+                        }
+                    </div>
+                    <div className='flex mt-5 mb-20 justify-end max-w-5xl mx-auto'><Pagination current={currentPage} total={totalPages * 6} pageSize={6} onChange={handlePagination} /></div>
+                </>
             }
         </section>
     )
 }
 
 export default Home
+
+// 28: 10

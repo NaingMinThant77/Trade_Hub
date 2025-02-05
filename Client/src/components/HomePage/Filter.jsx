@@ -41,7 +41,7 @@ const Filter = ({ setProducts, getProducts }) => {
     }
 
     return (
-        <div className='flex items-center gap-3 my-8 max-w-4xl mx-auto flex-wrap justify-center'>{
+        <div className='flex items-center gap-3 my-8 max-w-6xl mx-auto flex-wrap justify-center'>{
             Categories.map((category, index) => <p key={category.value} className={` text-blue-600 px-2 py-1 text-sm rounded-md cursor-pointer border border-blue-600 ${index === selectedCategory && "bg-blue-600 text-white"}`} onClick={_ => categoryHandler(index)}>{category.label}</p>)
         }
             {
