@@ -4,9 +4,10 @@ const User = require("../models/User")
 exports.getAllProducts = async (req, res) => {
     try {
         const productDocs = await Product.find().populate("seller", "name").sort({ createdAt: -1 });
+        const pendingProducts = await Product.find({ status: "pending" }).countDocuments()
         return res.status(200).json({
             isSuccess: true,
-            productDocs
+            productDocs, pendingProducts
         });
     } catch (error) {
         return res.status(422).json({
@@ -26,6 +27,7 @@ exports.getAllProductsWithPagination = async (req, res) => {
             .sort({ createdAt: -1 })
             .skip((currentPage - 1) * perPage) // Skipping previous pages
             .limit(perPage);  // Limiting number of products per page
+
         res.status(200).json({
             isSuccess: true,
             productDocs,

@@ -84,7 +84,8 @@ const Home = () => {
                             ))
                         }
                     </div>
-                    <div className='flex mt-5 mb-20 justify-end max-w-5xl mx-auto'><Pagination current={currentPage} total={totalPages * 6} pageSize={6} onChange={handlePagination} /></div>
+                    <div className='flex mt-5 justify-end max-w-5xl mx-auto'><Pagination current={currentPage} total={totalPages * 6} pageSize={6} onChange={handlePagination} /></div>
+                    <div className='my-10 text-sm font-medium text-center text-blue-600 '>Make with love by Trade Hub @2025</div>
                 </>
             }
         </section>
@@ -92,5 +93,3 @@ const Home = () => {
 }
 
 export default Home
-
-// 28: 10

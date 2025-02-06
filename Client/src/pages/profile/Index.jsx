@@ -83,7 +83,7 @@ const Index = () => {
                     <span className="text-red-600 font-medium">{notification.length}</span>
                 </span>
             ),
-            children: <Notification notification={notification} />,
+            children: <Notification notification={notification} getNoti={getNoti} />,
         },
         {
             key: '4',

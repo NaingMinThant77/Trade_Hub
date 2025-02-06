@@ -7,11 +7,14 @@ import { useDispatch } from 'react-redux';
 import { setLoader } from "../../store/slices/loaderSlice"
 
 const Hero = ({ setProducts, getProducts }) => {
-    const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
 
     const dispatch = useDispatch()
 
     const searchHandler = async () => {
+        if (searchKey.trim().length === 0) {
+            return message.error("SearchKey must have")
+        }
         dispatch(setLoader(true))
         try {
             const response = await getProductsByFilters("searchKey", searchKey);
