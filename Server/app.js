@@ -8,7 +8,7 @@ const multer = require("multer")
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "https://tradehub-client.onrender.com" }));
 app.use(bodyParser.json());
 
 const fileFilterConfigure = (req, file, cb) => {
