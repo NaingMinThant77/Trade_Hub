@@ -46,6 +46,9 @@ exports.markAsRead = async (req, res) => {
         if (!notiDoc) {
             throw new Error("Notification not found!")
         }
+        if (req.userId.toString() !== notiDoc.owner_id.toString()) {
+            throw new Error("Authorization Failed")
+        }
 
         notiDoc.isRead = true
         notiDoc.save()
@@ -65,6 +68,10 @@ exports.markAsRead = async (req, res) => {
 exports.deleteNoti = async (req, res) => {
     const { id } = req.params;
     try {
+        const notiDoc = await Notification.findById(id)
+        if (req.userId.toString() !== notiDoc.owner_id.toString()) {
+            throw new Error("Authorization Failed")
+        }
         await Notification.findByIdAndDelete(id)
 
         res.status(200).json({

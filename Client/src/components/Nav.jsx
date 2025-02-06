@@ -17,11 +17,11 @@ const Nav = () => {
     return (
         <nav className=" text-blue-600 flex items-center justify-between gap-3 py-4 mb-4">
             <Link to={"/"} className="font-bold text-2xl">TradeHub</Link>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
                 <Link to={"/about"}>About</Link>
                 <Link to={"/about"}>Contact</Link>
                 <Link to={"/about"}>Q&A</Link>
-            </div>
+            </div> */}
             {
                 userId
                     ? (

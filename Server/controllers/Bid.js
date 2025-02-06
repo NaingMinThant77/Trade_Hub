@@ -3,7 +3,9 @@ const Bid = require("../models/Bid")
 exports.savedNewBid = async (req, res) => {
     const { message, phone, product_id, seller_id, buyer_id } = req.body;
     try {
-
+        if (seller_id === buyer_id) {
+            throw new Error("Authorization Failed.")
+        }
         await Bid.create({
             product_id, seller_id, buyer_id, text: message,
             phone_number: phone
@@ -24,7 +26,7 @@ exports.getAllBids = async (req, res) => {
     const { product_id } = req.params;
     try {
         const bidDocs = await Bid.find({ product_id }).select("text phone_number createdAt")
-            .populate("buyer_id", "name").sort({createdAt: -1})
+            .populate("buyer_id", "name").sort({ createdAt: -1 })
 
         if (!bidDocs || bidDocs.length === 0) {
             throw new Error("No bids are not placed yet")

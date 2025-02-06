@@ -29,7 +29,8 @@ const store = configureStore({
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
             serializableCheck: false
-        })
+        }),
+    devTools: false
 })
 
 export default store;

@@ -2,6 +2,7 @@ import { formatDistanceToNow } from "date-fns"
 import { Link } from "react-router-dom"
 import { deleteAllNoti, deleteNoti, makeRead } from "../../apicalls/notification"
 import { message } from "antd"
+import { NotificationPlacements } from "antd/es/notification/interface"
 
 const Notification = ({ notification, getNoti }) => {
     const markAsRead = async (id) => {
@@ -51,7 +52,9 @@ const Notification = ({ notification, getNoti }) => {
         <section>
             <div className="flex justify-between my-2">
                 <h1 className='text-2xl font-semibold my-2'>Notifications</h1>
-                <p className="text-red-600 font-medium underline cursor-pointer" onClick={deleteAllHandler}>Delete All Forever</p>
+                {
+                    notification.length > 0 && <p className="text-red-600 font-medium underline cursor-pointer" onClick={deleteAllHandler}>Delete All Forever</p>
+                }
             </div>
             <div className="max-w-3xl">
                 {
