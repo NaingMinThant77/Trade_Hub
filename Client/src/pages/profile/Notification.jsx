@@ -56,7 +56,7 @@ const Notification = ({ notification, getNoti }) => {
                     notification.length > 0 && <p className="text-red-600 font-medium underline cursor-pointer" onClick={deleteAllHandler}>Delete All Forever</p>
                 }
             </div>
-            <div className="max-w-3xl">
+            <div className="max-w-5xl h-[calc(100vh-300px)] overflow-y-scroll pr-2]">
                 {
                     notification.length === 0 && <p className="text-red-600 font-medium my-5">No notification yet!.</p>
                 }

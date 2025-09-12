@@ -132,8 +132,9 @@ const Index = () => {
     const onChangeHandler = (key) => {
         setActiceTabKey(key)
     }
+
     return (
-        <section>
+        <section >
             <Tabs activeKey={activeTabKey} onChange={onChangeHandler} items={items} tabPosition='left' size='large' />
         </section>
     )

@@ -43,15 +43,10 @@ const AuthForm = ({ isLoginPage }) => {
         isSubmitting(false)
     }
 
-    const options = [
-        { value: 'admin', label: 'Admin', },
-        { value: 'user', label: 'User', }
-    ];
-
     return (
-        <section className='w-full h-screen flex justify-center mt-32'>
+        <section className='w-full flex justify-center mt-20 mb-14 '>
             <div className='w-[450px]'>
-                <h1 className='text-3xl font-bold mb-4 text-blue-600 '>POINT.IO - {isLoginPage ? "LOGIN" : "REGISTER"}</h1>
+                <h1 className='text-3xl font-bold mb-4 text-blue-600 '>TradePoint - {isLoginPage ? "LOGIN" : "REGISTER"}</h1>
                 <Form layout='vertical' onFinish={handleOnFinish}>
                     {
                         !isLoginPage && (
@@ -75,15 +70,6 @@ const AuthForm = ({ isLoginPage }) => {
                     ]} hasFeedback>
                         <Input.Password placeholder='password ...'></Input.Password>
                     </Form.Item>
-                    {
-                        !isLoginPage && (
-                            <Form.Item name="role" label="Role" rules={[
-                                { required: true, message: "Role must choose" }
-                            ]} hasFeedback>
-                                <Select defaultValue={""} options={options} />
-                            </Form.Item>
-                        )
-                    }
                     <Form.Item>
                         <Button block type='primary' htmlType="submit" disabled={submitting}>{submitting ? "Submitting ..." : isLoginPage ? "Login" : "Register"}</Button>
                     </Form.Item>

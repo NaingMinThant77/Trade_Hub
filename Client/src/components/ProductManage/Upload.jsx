@@ -132,7 +132,7 @@ const Upload = ({ editProductId, setActiceTabKey }) => {
                     }
                 </div>
                 {
-                    selectedImagesCount > 1 && <button className='block my-4 text-white bg-blue-600 rounded-md px-3 py-2 font-medium' disabled={isProcessing}>{
+                    selectedImagesCount > 0 && <button className='block my-4 text-white bg-blue-600 rounded-md px-3 py-2 font-medium' disabled={isProcessing}>{
                         isProcessing ? "Uploading ..." : "Upload images"
                     }</button>
                 }

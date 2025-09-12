@@ -87,135 +87,211 @@ const Details = () => {
     }
 
     return (
-        <section className={`flex mt-20 ${isProcessing ? "items-center justify-center" : "items-start justify-between"}`}>
-            {
-                isProcessing ?
-                    <RotatingLines
-                        visible={isProcessing}
-                        height="50"
-                        width="50"
-                        color="#3b82f6"
-                        strokeWidth="5"
-                        animationDuration="0.75"
-                        ariaLabel="rotating-lines-loading"
-                    /> : <>
-                        {
-                            product && product.category && product.seller && <>
-                                <div className="w-1/3">
-                                    {
-                                        product && product.images && product.images.length > 0 ? (
-                                            <>
-                                                <img src={product.images[selectedImage]} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
-                                                <div className="flex items-center gap-3 mt-3">
-                                                    {
-                                                        product.images.map((i, index) => <div key={i} className={`border-4 overflow-hidden border-blue-500 rounded-lg p-2 ${selectedImage === index && "border-dashed"}`}>
-                                                            <img src={i} alt={product.name} className="w-24 h-24 object-cover"
-                                                                onClick={() => setSelectedImage(index)} />
-                                                        </div>)
-                                                    }
+        <section
+            className={`flex mt-20 ${isProcessing
+                ? "items-center justify-center h-[70vh]"
+                : "items-start justify-between gap-10"
+                }`}
+        >
+            {isProcessing ? (
+                <RotatingLines
+                    visible={isProcessing}
+                    height="50"
+                    width="50"
+                    color="#3b82f6"
+                    strokeWidth="5"
+                    animationDuration="0.75"
+                    ariaLabel="rotating-lines-loading"
+                />
+            ) : (
+                <>
+                    {product && product.category && product.seller && (
+                        <div className="flex flex-col md:flex-row gap-8 md:mx-auto px-4 md:px-0">
+                            {/* LEFT: Images */}
+                            <div className="w-full md:w-1/3">
+                                {product.images && product.images.length > 0 ? (
+                                    <>
+                                        <img
+                                            src={product.images[selectedImage]}
+                                            alt={product.name}
+                                            className="w-full h-80 md:h-96 object-cover border rounded-xl shadow-sm"
+                                        />
+                                        <div className="flex items-center gap-3 mt-3 overflow-x-auto">
+                                            {product.images.map((i, index) => (
+                                                <div
+                                                    key={i}
+                                                    className={`border-2 rounded-xl p-1 cursor-pointer transition ${selectedImage === index ? "border-blue-600 border-dashed" : "border-gray-300"
+                                                        }`}
+                                                    onClick={() => setSelectedImage(index)}
+                                                >
+                                                    <img src={i} alt={product.name} className="w-20 h-20 object-cover rounded-lg" />
                                                 </div>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <img src={TradeHub} alt={product.name} className="w-full h-96 object-fill object-center border-2 overflow-hidden border-gray-500 rounded-lg" />
-                                                <p className="font-medium my-2 text-red-600">This product does not include images.</p></>
-                                        )}
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <img
+                                            src={TradeHub}
+                                            alt={product.name}
+                                            className="w-full h-80 md:h-96 object-fill object-center border rounded-xl shadow-sm"
+                                        />
+                                        <p className="font-medium my-2 text-red-600 text-center">
+                                            This product does not include images.
+                                        </p>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* RIGHT: Product Info */}
+                            <div className="w-full md:w-2/3 md:px-10 mt-6 md:mt-0">
+                                {/* Title & Back */}
+                                <div className="flex flex-col gap-4 mb-6">
+                                    {/* Title & Back Button */}
+                                    <div className="flex flex-row justify-between items-start md:items-center gap-2">
+                                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                                            {product.name}
+                                        </h1>
+                                        <ArrowLeftIcon
+                                            width={30}
+                                            height={30}
+                                            className="text-blue-600 cursor-pointer hover:scale-110 transition-transform"
+                                            onClick={() => navigate(-1)}
+                                        />
+                                    </div>
+
+                                    {/* Description */}
+                                    <p className="text-gray-500 font-medium leading-relaxed">
+                                        {product.description}
+                                    </p>
                                 </div>
-                                <div className="w-2/3 px-20">
-                                    <div className="flex justify-between">
-                                        <div className="w-3/4">
-                                            <h1 className="text-3xl font-bold my-1">{product.name}</h1>
-                                            <p className="text-gray-500 font-medium leading-6 mb-4">{product.description}</p>
-                                        </div>
-                                        <ArrowLeftIcon width={30} height={30} className="text-blue-600 cursor-pointer" onClick={() => { navigate(-1) }} />
+
+
+                                <hr className="my-4" />
+
+                                {/* Informations */}
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2">Informations</h2>
+                                <div className="flex flex-col md:flex-row justify-between mb-6">
+                                    <div className="font-medium space-y-2">
+                                        <p>Price</p>
+                                        <p>Category</p>
+                                        <p>Used For</p>
                                     </div>
-                                    <hr />
-                                    <h1 className="text-2xl font-semibold my-2">Informations</h1>
-                                    <div className="flex justify-between mb-4">
-                                        <div className="font-medium space-y-2">
-                                            <p>Price</p>
-                                            <p>Category</p>
-                                            <p>Used For</p>
-                                        </div>
-                                        <div className="text-gray-600 space-y-2 text-right">
-                                            <p>{product.price} Kyats</p>
-                                            <p>{product.category.toUpperCase().replaceAll("_", " ")}</p>
-                                            <p>{product.usedFor}</p>
-                                        </div>
+                                    <div className="text-gray-600 space-y-2 text-left md:text-right mt-2 md:mt-0">
+                                        <p className="text-lg font-semibold text-blue-600">{product.price} Kyats</p>
+                                        <p>{product.category.toUpperCase().replaceAll("_", " ")}</p>
+                                        <p>{product.usedFor}</p>
                                     </div>
-                                    <hr />
-                                    <div className="mb-4">
-                                        <h1 className="text-2xl font-semibold my-2">Details</h1>
-                                        {
-                                            product.details.map((d, i) =>
-                                                <div className="flex justify-between" key={i}>
-                                                    <div className="font-medium space-y-2">
-                                                        <p>{d}</p>
-                                                    </div>
-                                                    <div className="text-gray-600 space-y-2">
-                                                        <p>include</p>
-                                                    </div>
-                                                </div>)
-                                        }
-                                    </div>
-                                    <hr />
-                                    <h1 className="text-2xl font-semibold my-2">Seller Information</h1>
-                                    <div className="flex justify-between mb-4">
-                                        <div className="font-medium space-y-2">
-                                            <p>Name</p>
-                                            <p>E-mail</p>
-                                        </div>
-                                        <div className="text-gray-600 space-y-2 text-right">
-                                            <p>{product.seller.name}</p>
-                                            <p>{product.seller.email}</p>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <h1 className="text-2xl font-semibold my-2">Place Your Bids</h1>
-                                    {!userId ? <p className="font-medium text-red-600"><Link to={"/login"} className="underline">Login</Link> or <Link to={"/register"} className="underline">Register</Link> to bid this product.</p>
-                                        : <>
-                                            {userId._id !== product.seller._id ? <div className="mb-10">
-                                                <Form form={form} layout="vertical" onFinish={onFinishHandler}>
-                                                    <Form.Item name="message" label="Text : " rules={[
-                                                        { required: true, message: "Message must be included" },
-                                                    ]} hasFeedback>
-                                                        <Input placeholder='Write something ...'></Input>
-                                                    </Form.Item>
-                                                    <Form.Item name="phone" label="Phone Number : " rules={[
-                                                        { required: true, message: "Phone must be included" },
-                                                    ]} hasFeedback>
-                                                        <Input type="number" placeholder='phone number ...'></Input>
-                                                    </Form.Item>
-                                                    <div className="text-right">
-                                                        <button className="text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600" disabled={isPlace}>{isPlace ? "Submitting Message ..." : "Submit Message"}</button>
-                                                    </div>
-                                                </Form>
-                                            </div> : <>{
-                                                userId._id === product.seller._id && <p className="font-medium text-red-600 mb-2">You are the product seller / owner. You cannot place bid</p>
-                                            }</>}
-                                        </>
-                                    }
-                                    <hr />
-                                    <h1 className="text-2xl font-semibold my-2">Recent Bids</h1>
-                                    <div>
-                                        {
-                                            bids.map((bid, i) => (
-                                                <div key={i} className="mb-4 bg-white px-2 py-4 rounded-lg">
-                                                    <h5 className="font-medium text-base">{bid.buyer_id.name}</h5>
-                                                    <p className="text-xs text-gray-400">{formatDistanceToNow(new Date(bid.createdAt))} ago</p>
-                                                    <p className="text-gray-600 text-sm font-medium">{bid.text}</p>
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    {
-                                        bids.length === 0 && <p className="my-2 font-medium text-red-600">No bids are not placed yet!</p>
-                                    }
                                 </div>
-                            </>
-                        }</>
-            }
+
+                                <hr className="my-4" />
+
+                                {/* Details */}
+                                <div className="mb-6">
+                                    <h2 className="text-xl md:text-2xl font-semibold mb-2">Details</h2>
+                                    {product.details.map((d, i) => (
+                                        <div
+                                            className="flex justify-between bg-gray-50 px-3 py-2 rounded-lg mb-2"
+                                            key={i}
+                                        >
+                                            <p className="font-medium">{d}</p>
+                                            <p className="text-gray-600 text-sm">include</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <hr className="my-4" />
+
+                                {/* Seller Info */}
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2">Seller Information</h2>
+                                <div className="flex flex-col md:flex-row justify-between mb-6">
+                                    <div className="font-medium space-y-2">
+                                        <p>Name</p>
+                                        <p>Email</p>
+                                    </div>
+                                    <div className="text-gray-600 space-y-2 text-left md:text-right mt-2 md:mt-0">
+                                        <p>{product.seller.name}</p>
+                                        <p>{product.seller.email}</p>
+                                    </div>
+                                </div>
+
+                                <hr className="my-4" />
+
+                                {/* Bidding */}
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2">Place Your Bids</h2>
+                                {!userId ? (
+                                    <p className="font-medium text-red-600">
+                                        <Link to={"/login"} className="underline">
+                                            Login
+                                        </Link>{" "}
+                                        or{" "}
+                                        <Link to={"/register"} className="underline">
+                                            Register
+                                        </Link>{" "}
+                                        to bid on this product.
+                                    </p>
+                                ) : userId._id !== product.seller._id ? (
+                                    <div className="mb-10">
+                                        <Form form={form} layout="vertical" onFinish={onFinishHandler}>
+                                            <Form.Item
+                                                name="message"
+                                                label="Text:"
+                                                rules={[{ required: true, message: "Message must be included" }]}
+                                                hasFeedback
+                                            >
+                                                <Input placeholder="Write something ..." />
+                                            </Form.Item>
+                                            <Form.Item
+                                                name="phone"
+                                                label="Phone Number:"
+                                                rules={[{ required: true, message: "Phone must be included" }]}
+                                                hasFeedback
+                                            >
+                                                <Input type="number" placeholder="Phone number ..." />
+                                            </Form.Item>
+                                            <div className="text-right">
+                                                <button
+                                                    className="text-white font-medium text-base px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition"
+                                                    disabled={isPlace}
+                                                >
+                                                    {isPlace ? "Submitting Message ..." : "Submit Message"}
+                                                </button>
+                                            </div>
+                                        </Form>
+                                    </div>
+                                ) : (
+                                    <p className="font-medium text-red-600 mb-4">
+                                        You are the product seller / owner. You cannot place a bid.
+                                    </p>
+                                )}
+
+                                <hr className="my-4" />
+
+                                {/* Recent Bids */}
+                                <h2 className="text-xl md:text-2xl font-semibold mb-2">Recent Bids</h2>
+                                <div className="space-y-4">
+                                    {bids.length > 0 ? (
+                                        bids.map((bid, i) => (
+                                            <div key={i} className="bg-gray-50 px-4 py-3 rounded-lg shadow-sm">
+                                                <h5 className="font-medium text-base">{bid.buyer_id.name}</h5>
+                                                <p className="text-xs text-gray-400">
+                                                    {formatDistanceToNow(new Date(bid.createdAt))} ago
+                                                </p>
+                                                <p className="text-gray-600 text-sm mt-1">{bid.text}</p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="font-medium text-red-600">No bids have been placed yet!</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                    )}
+                </>
+            )}
         </section>
+
     )
 }
 

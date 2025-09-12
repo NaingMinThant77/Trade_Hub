@@ -1,14 +1,12 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid"
-import { getProductsByFilters } from "../../apicalls/public";
-import { message } from "antd";
-import { useState } from "react";
-
-import { useDispatch } from 'react-redux';
+import { getProductsByFilters } from "../../apicalls/public"
+import { message } from "antd"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import { setLoader } from "../../store/slices/loaderSlice"
 
 const Hero = ({ setProducts, getProducts }) => {
-    const [searchKey, setSearchKey] = useState("");
-
+    const [searchKey, setSearchKey] = useState("")
     const dispatch = useDispatch()
 
     const searchHandler = async () => {
@@ -17,7 +15,7 @@ const Hero = ({ setProducts, getProducts }) => {
         }
         dispatch(setLoader(true))
         try {
-            const response = await getProductsByFilters("searchKey", searchKey);
+            const response = await getProductsByFilters("searchKey", searchKey)
             if (response.isSuccess) {
                 setProducts(response.productDocs)
             } else {
@@ -35,21 +33,50 @@ const Hero = ({ setProducts, getProducts }) => {
     }
 
     return (
-        <div className="w-full text-center mb-2 mt-10">
-            <h1 className="text-4xl font-bold text-blue-600 mb-4">"Discover, Connect and Thrive with TradeHub"</h1>
-            <p className="text-lg font-medium text-gray-500 max-w-xl mx-auto my-4">
-                Bings buyers and sellers together, providing trust, community, and success. Explore, connect and thrieve with us.
+        <section className="w-full text-center mt-12 mb-8 px-4">
+            {/* Headline */}
+            <h1 className="text-4xl font-extrabold text-blue-700 leading-tight mb-4">
+                Discover, Connect & Thrive with{" "}
+                <span className="text-yellow-400">TradePoint</span>
+            </h1>
+
+            {/* Subheading */}
+            <p className="text-lg sm:text-xl font-medium text-gray-600 max-w-2xl mx-auto mb-6">
+                Bringing buyers and sellers together with{" "}
+                <span className="text-blue-600 font-semibold">trust</span>,{" "}
+                <span className="text-blue-600 font-semibold">community</span>, and{" "}
+                <span className="text-blue-600 font-semibold">success</span>.
             </p>
-            <div className="max-w-sm mx-auto flex items-center gap-2">
+
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto flex items-center gap-2">
                 <div className="relative w-full">
-                    <input type="text" className="bg-white outline-none p-2 rounded-xl w-full" value={searchKey} onChange={e => setSearchKey(e.target.value)} />
-                    <MagnifyingGlassIcon width={22} height={22} className="text-blue-600 absolute top-2 right-2 cursor-pointer" onClick={searchHandler} />
+                    <input
+                        type="text"
+                        value={searchKey}
+                        onChange={(e) => setSearchKey(e.target.value)}
+                        placeholder="Search products..."
+                        className="bg-white outline-none border border-blue-300 px-4 py-3 rounded-xl w-full shadow-sm focus:ring-2 focus:ring-blue-500"
+                    />
+                    <MagnifyingGlassIcon
+                        width={24}
+                        height={24}
+                        className="text-blue-600 absolute top-3 right-3 cursor-pointer hover:text-blue-800 transition"
+                        onClick={searchHandler}
+                    />
                 </div>
-                {
-                    searchKey && <button type="button" className="text-sm font-medium text-white bg-blue-600 p-2 rounded-md" onClick={clearHandler}>Clear</button>
-                }
+
+                {searchKey && (
+                    <button
+                        type="button"
+                        className="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-lg shadow"
+                        onClick={clearHandler}
+                    >
+                        Clear
+                    </button>
+                )}
             </div>
-        </div>
+        </section>
     )
 }
 

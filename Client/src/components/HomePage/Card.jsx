@@ -41,45 +41,75 @@ const Card = ({ product, saved = false, getAllProductsSaved, savedProducts, getP
 
     return (
         <>
-            {
-                product && <div className={`bg-white p-4 rounded-lg`}>
+            {product && (
+                <div className="bg-white p-4 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200">
+                    {/* Product Image */}
                     <Link to={`/products/${product._id}`}>
-                        <img src={imageUrl} alt={product.name || "Product"} className="w-full h-52 object-cover rounded-lg" />
+                        <img
+                            src={imageUrl}
+                            alt={product.name || "Product"}
+                            className="w-full h-52 object-cover rounded-xl"
+                        />
                     </Link>
 
-                    <p className="text-white text-xs bg-blue-600 rounded-lg p-1 w-fit font-medium my-2">
-                        {product.category ? product.category.toUpperCase().replaceAll("_", " ") : "UNKNOWN"}
+                    {/* Category */}
+                    <p className="text-white text-xs bg-blue-600 rounded-full px-3 py-1 font-medium w-fit my-3 shadow-sm">
+                        {product.category
+                            ? product.category.toUpperCase().replaceAll("_", " ")
+                            : "UNKNOWN"}
                     </p>
 
-                    <div className="flex items-center justify-between">
+                    {/* Title & Save */}
+                    <div className="flex items-center justify-between mb-2">
                         <Link to={`/products/${product._id}`}>
-                            <p className="text-xl font-bold font-gray-700">{product.name || "Unnamed Product"}</p>
+                            <p className="text-lg font-bold text-gray-800 hover:text-blue-600 transition-colors duration-200">
+                                {product.name || "Unnamed Product"}
+                            </p>
                         </Link>
-                        {
-                            userId && <> {
-                                saved ? <BookmarkSlashIcon className="w-6 h-8 text-blue-600 cursor-pointer"
-                                    onClick={() => productStatusHandler(product._id)} /> : <>{
-                                        isProductSaved(product) ?
+
+                        {userId && (
+                            <>
+                                {saved ? (
+                                    <BookmarkSlashIcon
+                                        className="w-6 h-6 text-blue-600 cursor-pointer hover:scale-110 transition-transform duration-200"
+                                        onClick={() => productStatusHandler(product._id)}
+                                    />
+                                ) : (
+                                    <>
+                                        {isProductSaved(product) ? (
                                             <BookMark
-                                                className="w-6 h-8 text-blue-600"
+                                                className="w-6 h-6 text-blue-600 cursor-not-allowed"
                                                 onClick={() => message.warning("Product is already saved!")}
-                                            /> : <BookmarkIcon
-                                                className="w-6 h-8 text-blue-600 cursor-pointer"
+                                            />
+                                        ) : (
+                                            <BookmarkIcon
+                                                className="w-6 h-6 text-blue-600 cursor-pointer hover:scale-110 transition-transform duration-200"
                                                 onClick={() => productStatusHandler(product._id)}
-                                            />}
-                                </>
-                            }</>
-                        }
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        )}
                     </div>
 
-                    <p className="font-gray-500">
-                        {product.description ? product.description.slice(0, 80) : "No description available."}
+                    {/* Description */}
+                    <p className="text-gray-500 text-sm mb-3">
+                        {product.description
+                            ? product.description.slice(0, 80) + "..."
+                            : "No description available."}
                     </p>
-                    <hr />
-                    <p className="text-lg font-semibold mt-2 text-right">{product.price} Kyats</p>
+
+                    <hr className="my-2" />
+
+                    {/* Price */}
+                    <p className="text-lg font-semibold text-blue-600 text-right">
+                        {product.price} Kyats
+                    </p>
                 </div>
-            }
+            )}
         </>
+
     );
 };
 

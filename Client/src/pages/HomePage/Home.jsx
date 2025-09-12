@@ -77,15 +77,14 @@ const Home = () => {
                         ariaLabel="rotating-lines-loading"
                     />
                 </div> : <>
-                    <div className='grid grid-cols-3 gap-4 max-w-5xl mx-auto'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto'>
                         {
-                            products.map(product => (
-                                <Card key={product._id} product={product} getProducts={getProducts} savedProducts={savedProducts} getAllProductsSaved={getAllProductsSaved} />
-                            ))
+                            products.length > 0 ? products.map((product) => (
+                                <Card key={product._id} product={product} savedProducts={savedProducts} />
+                            )) : <div className='flex items-center justify-center text-2xl font-bold text-gray-600'>No products yet</div>
                         }
                     </div>
-                    <div className='flex mt-5 justify-end max-w-5xl mx-auto'><Pagination current={currentPage} total={totalPages * 6} pageSize={6} onChange={handlePagination} /></div>
-                    <div className='my-10 text-sm font-medium text-center text-blue-600 '>Make with love by Trade Hub @2025</div>
+                    <div className='flex mt-10 justify-end max-w-5xl mx-auto'><Pagination current={currentPage} total={totalPages * 6} pageSize={6} onChange={handlePagination} /></div>
                 </>
             }
         </section>

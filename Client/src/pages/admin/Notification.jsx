@@ -3,28 +3,48 @@ import { Link } from "react-router-dom"
 
 const Notification = ({ notification }) => {
     return (
-        <section>
-            <h1 className='text-2xl font-semibold my-2'>Notifications</h1>
-            <div className="max-w-3xl">
-                {
-                    notification.length === 0 && <p className="text-red-600 font-medium my-5">No notification yet!.</p>
-                }
-                {
-                    notification.map(noti => (
-                        <div key={noti._id} className='bg-white mb-4 rounded-lg p-4'>
-                            <p className='text-sm font-medium text-gray-500'>{formatDistanceToNow(new Date(noti.createdAt))} ago ...</p>
-                            <h4 className="text-lg font-bold my-1">{noti.title}</h4>
-                            <p className="text-sm font-medium text-gray-600">{noti.message}</p>
-                            <p className="font-medium text-gray-600 my-2">Contact Number - <span className="tracking-wide">{noti.phone_number}</span></p>
-                            <hr />
-                            <div className="text-right my-2">
-                                <Link to={`/products/${noti.product_id}`} className="text-blue-600 font-medium underline">View bids</Link>
+        <section className="max-w-3xl mx-auto">
+            <h1 className="text-2xl font-semibold my-4">Notifications</h1>
+
+            {notification.length === 0 ? (
+                <p className="text-red-600 font-medium my-5 text-center">
+                    No notifications yet!
+                </p>
+            ) : (
+                <div className="space-y-4">
+                    {notification.map((noti) => (
+                        <div
+                            key={noti._id}
+                            className="bg-white rounded-lg shadow-sm p-5 border border-gray-100"
+                        >
+                            <p className="text-xs text-gray-500 mb-1">
+                                {formatDistanceToNow(new Date(noti.createdAt))} ago
+                            </p>
+
+                            <h4 className="text-lg font-bold text-gray-800">{noti.title}</h4>
+                            <p className="text-sm text-gray-600 mt-1">{noti.message}</p>
+
+                            <p className="text-sm font-medium text-gray-700 mt-2">
+                                Contact Number:{" "}
+                                <span className="tracking-wide text-gray-900">
+                                    {noti.phone_number}
+                                </span>
+                            </p>
+
+                            <div className="border-t border-gray-200 mt-4 pt-3 flex justify-end">
+                                <Link
+                                    to={`/products/${noti.product_id}`}
+                                    className="text-blue-600 font-medium hover:underline"
+                                >
+                                    View Bids
+                                </Link>
                             </div>
                         </div>
-                    ))
-                }
-            </div>
+                    ))}
+                </div>
+            )}
         </section>
+
     )
 }
 

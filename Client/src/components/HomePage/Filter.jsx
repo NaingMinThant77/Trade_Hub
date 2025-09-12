@@ -41,13 +41,33 @@ const Filter = ({ setProducts, getProducts }) => {
     }
 
     return (
-        <div className='flex items-center gap-3 my-8 max-w-6xl mx-auto flex-wrap justify-center'>{
-            Categories.map((category, index) => <p key={category.value} className={` text-blue-600 px-2 py-1 text-sm rounded-md cursor-pointer border border-blue-600 ${index === selectedCategory && "bg-blue-600 text-white"}`} onClick={_ => categoryHandler(index)}>{category.label}</p>)
-        }
-            {
-                selectedCategory !== null && <button type="button" className={` bg-blue-600 text-white px-2 py-1 text-sm rounded-md cursor-pointer border border-blue-600 }`} onClick={clearHandler}>Clear</button>
-            }
+        <div className="flex items-center gap-3 my-8 max-w-6xl mx-auto flex-wrap justify-center">
+            {Categories.map((category, index) => (
+                <p
+                    key={category.value}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 cursor-pointer 
+        ${index === selectedCategory
+                            ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                            : "text-blue-600 border-blue-600 hover:bg-blue-50"
+                        }`}
+                    onClick={() => categoryHandler(index)}
+                >
+                    {category.label}
+                </p>
+            ))}
+
+            {selectedCategory !== null && (
+                <button
+                    type="button"
+                    className="px-3 py-1.5 text-sm font-medium rounded-full border bg-blue-600 text-white 
+                 border-blue-600 shadow-md hover:bg-blue-700 transition-all duration-200"
+                    onClick={clearHandler}
+                >
+                    Clear
+                </button>
+            )}
         </div>
+
     )
 }
 
