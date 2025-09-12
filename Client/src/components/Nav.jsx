@@ -24,7 +24,7 @@ const Nav = () => {
                 {/* Logo / Brand */}
                 <Link
                     to={"/"}
-                    className="font-extrabold text-2xl tracking-wide hover:scale-105 transition-transform"
+                    className="font-extrabold text-3xl tracking-wide hover:scale-105 transition-transform"
                 >
                     TradePoint
                 </Link>

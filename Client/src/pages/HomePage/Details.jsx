@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getProductsById } from "../../apicalls/public";
-import TradeHub from "../../images/TradeHub.jpg"
+import TradePoint from "../../images/TradePoint1.png"
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 import { Form, Input, message } from "antd";
@@ -132,7 +132,7 @@ const Details = () => {
                                 ) : (
                                     <>
                                         <img
-                                            src={TradeHub}
+                                            src={TradePoint}
                                             alt={product.name}
                                             className="w-full h-80 md:h-96 object-fill object-center border rounded-xl shadow-sm"
                                         />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import TradeHub from "../../images/TradeHub.jpg"
+import TradePoint from "../../images/TradePoint2.png"
 import { BookmarkIcon } from "@heroicons/react/24/outline"
 import { BookmarkIcon as BookMark } from "@heroicons/react/24/solid"
 import { savedProduct, unsavedProducts } from "../../apicalls/product"
@@ -37,7 +37,7 @@ const Card = ({ product, saved = false, getAllProductsSaved, savedProducts, getP
         return savedProducts.some(p => p.product_id._id === product._id)
     }
 
-    const imageUrl = product.images && product.images.length > 0 ? product.images[0] : TradeHub;
+    const imageUrl = product.images && product.images.length > 0 ? product.images[0] : TradePoint;
 
     return (
         <>

@@ -1,11 +1,13 @@
+import TradePoint from "../images/TradePoint1.png";
+
 const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-blue-600 to-blue-800 text-white mt-10">
       <div className="max-w-screen-xl py-10 px-6 sm:flex justify-between mx-auto gap-8">
         {/* Brand Section */}
         <div className="px-5 sm:w-7/12 border-b sm:border-b-0 sm:border-r border-blue-400 text-center sm:text-left">
-          <h3 className="font-extrabold mt-2 text-3xl text-white tracking-wide mb-4">
-            TradePoint
+          <h3 className="font-extrabold text-3xl text-white tracking-wide -mt-4">
+            <img src={TradePoint} alt="websiteIcon" className="w-32 h-24" />
           </h3>
           <p className="text-blue-100 text-sm leading-relaxed">
             TradePoint is your all-in-one destination for modern shopping,
