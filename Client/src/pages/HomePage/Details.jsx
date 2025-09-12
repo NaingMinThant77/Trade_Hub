@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { getProductsById } from "../../apicalls/public";
-import TradePoint from "../../images/TradePoint1.png"
+import TradePoint from "../../images/TradePoint2.png"
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 import { Form, Input, message } from "antd";
