@@ -3,96 +3,122 @@
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 
-# Trade Hub
+# Trade Point
 - This Project is MERN Trading App project 
 
 - Client => Used Dependencies => react, react-router-dom, redux, redux-toolkit, redux-persist, axios and date-fns. Styling => ant design, tremor, tailwindcss 
 
 - Server  => Used Dependencies => express, express-validator, jsonwebtoken, bcrypt, body-parser, multer, and cors. Database => mongoose, cloudinary
 
-
 ## Deployment
 
 To use this project run on browser
 
 ```bash
-  https://tradehub-client.onrender.com
+  https://trade-point-mern.onrender.com
 ```
 
 or
 
-To run in app
+Download and run in app
+
+install dependencies in both
+```bash
+  npm install
+```
+in react (frontend)
 ```bash
   npm run dev
 ```
-- Login Page
-  
-<img width="974" alt="Image" src="https://github.com/user-attachments/assets/484f0970-e252-49de-a44f-3d90f976551c" />
+in expressjs (backend)
+```bash
+  node app.js
+```
+
+## TradePoint
 
 - Register Page
   
-<img width="977" alt="Image" src="https://github.com/user-attachments/assets/458055ab-42f0-43a5-a9ab-3044c99a0859" />
+![Image](https://github.com/user-attachments/assets/cf00a481-89dd-48d7-8460-7c1fa884420c)
+
+- Login Page
+  
+![Image](https://github.com/user-attachments/assets/ed052e5d-88d8-497a-9fab-17432d95e4dc)
 
 ## Before Login
+
 - HomePage
   
-<img width="977" alt="Image" src="https://github.com/user-attachments/assets/22059c49-da3c-45ff-bb55-9506541da3f4" />
+![Image](https://github.com/user-attachments/assets/4210755e-229f-4d4e-9c63-4457642d1433)
+
+- Filter By Tab
+  
+![Image](https://github.com/user-attachments/assets/b45e0d2f-03f9-470f-8a0b-b86aa09d0124)
+
+- Filter By Textbox
+  
+![Image](https://github.com/user-attachments/assets/3bf1da2c-d3e4-4797-be95-9f603188cc50)
 
 - Detail Page
-<img width="989" alt="Image" src="https://github.com/user-attachments/assets/73dd8309-f64c-49fb-913f-b07851b6571f" />
-
-## After Login as Admin
-
-- HomePage (Admin)
   
-<img width="986" alt="Image" src="https://github.com/user-attachments/assets/d7a98f82-baaa-4f4a-b964-b47abd8e4306" />
+![Image](https://github.com/user-attachments/assets/e40bab17-1e1a-4646-b0a5-fb35bb6620ee)
 
-- BookMark Tag
+## After Login As User
 
-<img width="1001" alt="Image" src="https://github.com/user-attachments/assets/f144b887-3f8b-4241-a048-2f1bfb759cb0" />
- 
-- Admin Panel
+- Home Page
+  
+![Image](https://github.com/user-attachments/assets/8a983a1b-a817-4018-9058-6f4af80735d6)
 
-<img width="1027" alt="Image" src="https://github.com/user-attachments/assets/2c9a7dad-18a8-45d8-b576-3dfa7b1a43a5" />
+- Detail Page of Own Post (You cannot bid)
+  
+![Image](https://github.com/user-attachments/assets/e325d0a8-100a-49fd-981c-6f4591df44ca)
 
-- Manage Products
+- Detail Page of Other User's Post (You can bid)
+  
+![Image](https://github.com/user-attachments/assets/e8b2adee-cc10-45a9-b288-4af910e3bcf3)
 
-<img width="1006" alt="Image" src="https://github.com/user-attachments/assets/7aa20703-4c49-4a28-98b1-a824d5592bc3" />
+- Saved Products
+  
+![Image](https://github.com/user-attachments/assets/45f844b7-4069-40e6-aef9-87d80030a75b)
 
-- Manage Users
+-User Profile Products Page
 
-<img width="1010" alt="Image" src="https://github.com/user-attachments/assets/fc5f3b3e-220b-4c92-9db1-f78f3ed16b0e" />
+![Image](https://github.com/user-attachments/assets/5524ba93-47ee-4c85-9c83-1fc1eaed3cef)
 
-- Logout
+- Upload Images
 
-<img width="1007" alt="Image" src="https://github.com/user-attachments/assets/8cfd1d47-30e3-4e22-be35-99687342a945" />
-
-## After Login as User
-
-- User Home
-
-<img width="981" alt="Image" src="https://github.com/user-attachments/assets/b21fbd8f-3c7f-40c6-b7bc-405f7b150475" />
-
-- User Products Page
-
-<img width="1002" alt="Image" src="https://github.com/user-attachments/assets/b54320dc-8f96-43f4-82b9-82f2fe1db112" />
-
-- Create Product
-
-<img width="1012" alt="Image" src="https://github.com/user-attachments/assets/2039995e-ae6a-49af-9660-1ded2e796b8b" />
+![Image](https://github.com/user-attachments/assets/64228e81-27c2-430e-bbf9-a2bf64aec671)
 
 - Edit Product
 
-<img width="1024" alt="Image" src="https://github.com/user-attachments/assets/9a21841e-89cf-41cd-876c-afb1d730f4a4" />
+![Image](https://github.com/user-attachments/assets/a816f0e6-7cdd-4466-bdc7-2f2c4b93a85c)
 
-- Upload Image
+- Create Product
 
-<img width="1012" alt="Image" src="https://github.com/user-attachments/assets/0e34a803-0019-462b-8b67-86f00fdfaa8f" />
+![Image](https://github.com/user-attachments/assets/d89cf872-d641-419c-966e-01371582c6ef)
 
-- marco gives Bid on other user's (NMT1) post
+- Notifications (From Bid)
 
-<img width="998" alt="Image" src="https://github.com/user-attachments/assets/7a86be7f-81b8-465d-b44d-bc3f17281c81" />
+![Image](https://github.com/user-attachments/assets/a5bce8b0-24d4-4276-be4c-6fd4ce09268f)
 
-- User(NMT1) gets Notification message from bid user (marco)
+-  User Profile
 
-<img width="1038" alt="Image" src="https://github.com/user-attachments/assets/23de3c9a-4d7c-475d-a88e-3159480c4db3" />
+![Image](https://github.com/user-attachments/assets/199790b6-f07e-4f49-b386-2e05c7c16d44)
+
+## Login as Admin
+
+- AdminDashboard Page
+
+![Image](https://github.com/user-attachments/assets/602b07e3-b04c-4c85-804c-02c981fc2944)
+
+- Manage Products
+
+![Image](https://github.com/user-attachments/assets/53b4967a-97aa-45a1-b71a-272fac1d4b75)
+
+- Manage Users
+
+![Image](https://github.com/user-attachments/assets/96e974e6-d017-4424-8f59-305ea689ab8c)
+
+- Admin Profile
+
+![Image](https://github.com/user-attachments/assets/da31a470-1636-4601-ba73-7b40b9ecfa72)
